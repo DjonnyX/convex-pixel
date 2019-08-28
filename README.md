@@ -1,8 +1,6 @@
 # ConvexPixel
 
-> A library for creating pseudo 3d interactive scenes based on web gl
-
----
+A library for creating pseudo 3d interactive scenes based on web gl
 
 ## dependencies
 
@@ -23,7 +21,7 @@ npm install pix3d
 
 ## Getting started
 
-Let's demonstrate simple usage with ... example:
+Let's demonstrate simple usage with basic example:
 
 ```ts
 const app = new App();
