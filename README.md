@@ -10,13 +10,13 @@ A library for creating pseudo 3d interactive scenes based on web gl
 ## 🔧 Installation
 
 ```sh
-yarn add pix3d
+yarn add convex-pixel
 ```
 
 or
 
 ```sh
-npm install pix3d
+npm install convex-pixel
 ```
 
 ## Getting started
