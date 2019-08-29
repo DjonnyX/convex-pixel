@@ -25,16 +25,18 @@ Go checkout [examples](./examples) !
 
 ## Live demo
 
-Go checkout [demo](http://contents.eugene-grebennikov.pro/cpx/examples/) !
+Look at the [demo](http://contents.eugene-grebennikov.pro/cpx/examples/) !
 
 ## Getting started
 
 Let's demonstrate simple usage with basic example:
 
 ```ts
-const app = new App();
+import CPX from "convex-pixel";
 
-const room = new BaseRoom({
+const app = new CPX.core.App();
+
+const room = new CPX.display.BaseRoom({
   camera: {
     class: Camera,
     config: {
@@ -45,11 +47,12 @@ const room = new BaseRoom({
   autosize: true
 });
 
-const cpxObj = new CPX.ConvexObject(this, {
+const cpxObj = new CPX.display.ConvexObject(this, {
   depth: 2.5;
   hitArea: [0,0,200,0,200,200,0,200];
   diffuseMap: "../assets/diffuse.png";
   depthMap: "../assets/depth.png";
+  ...
 });
 
 scene.addChild(cpxObj);
