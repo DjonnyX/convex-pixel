@@ -1,6 +1,6 @@
 import * as PIXI from "pixi.js";
-import { SonarUtils } from "@cpx/utils";
-import { BaseRoom } from "@cpx/display/base";
+import { sonar as SonarUtils } from "../utils/package";
+import { BaseRoom } from "../display/base";
 import { DomSynchronizer } from "./dom-synchronizer";
 
 export interface IAppConfig {
@@ -24,9 +24,15 @@ export class App<R extends BaseRoom = any> {
 
   protected _room: R | undefined;
 
+  protected _domSynchronizer: DomSynchronizer | undefined;
+
   private _stageSonarResizeDetector: SonarUtils.SonarDetector | undefined;
 
   private _domElementResizeSonarDetector: SonarUtils.SonarDetector | undefined;
+
+  public get domSynchronizer() {
+    return this._domSynchronizer;
+  }
 
   constructor(config: IAppConfig) {
     SonarUtils.Sonar.create().run();
@@ -42,9 +48,7 @@ export class App<R extends BaseRoom = any> {
     });
     App._instance = this;
 
-    const sync = new DomSynchronizer();
-    // At now domSynchronizer is not allowed
-    // window.domSynchronizer = sync;
+    this._domSynchronizer = new DomSynchronizer();
 
     this._viewDomElement.appendChild(this.pixi.view);
 

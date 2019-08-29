@@ -1,4 +1,4 @@
-import { App } from "../../core";
+import { App } from "../../core/package";
 import { ICameraController } from "./interfaces";
 import { Vector2D, IVector2D } from "../../utils/geom/vector";
 import { Camera } from "../camera";

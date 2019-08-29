@@ -1,3 +1,5 @@
-export * from "./camera";
-export * from "./controller";
-export * from "./service";
+import * as camera from "./package";
+
+export {
+  camera
+};

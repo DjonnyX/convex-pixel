@@ -1,8 +1,7 @@
-// Place your settings in this file to overwrite default and user settings.
 {
-  "editor.formatOnSave": true,
-  "typescript.format.enable": false,
-  "javascript.format.enable": false,
+  "editor.formatOnSave": false,
+  "typescript.format.enable": true,
+  "javascript.format.enable": true,
   "typescript.implementationsCodeLens.enabled": true,
   "typescript.referencesCodeLens.enabled": true,
   "javascript.referencesCodeLens.enabled": true,

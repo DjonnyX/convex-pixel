@@ -1,7 +1,7 @@
 import * as PIXI from "pixi.js";
-import { Camera, ICameraConfig, ICameraController } from "@cpx/camera";
-import { P3DCameraProcessor } from "@cpx/core";
-import { DisplayUtils, SonarUtils } from "@cpx/utils";
+import { Camera, ICameraConfig, ICameraController } from "../../camera/package";
+import { P3DCameraProcessor } from "../../core/package";
+import { display as DisplayUtils, sonar as SonarUtils } from "../../utils/package";
 import { BaseContainer } from "./base-container";
 
 export interface IRoomOptions {
