@@ -19,6 +19,14 @@ or
 npm install convex-pixel
 ```
 
+## Examples
+
+Go checkout [examples](./examples) !
+
+## Live demo
+
+Go checkout [demo](http://contents.eugene-grebennikov.pro/cpx/examples/) !
+
 ## Getting started
 
 Let's demonstrate simple usage with basic example:
