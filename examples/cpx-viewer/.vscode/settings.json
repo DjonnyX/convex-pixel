@@ -1,0 +1,16 @@
+{
+  "editor.formatOnSave": false,
+  "typescript.format.enable": true,
+  "javascript.format.enable": true,
+  "typescript.implementationsCodeLens.enabled": true,
+  "typescript.referencesCodeLens.enabled": true,
+  "javascript.referencesCodeLens.enabled": true,
+  "editor.rulers": [
+    80,
+    100
+  ],
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "files.associations": {
+    "tslint*.json": "jsonc"
+  }
+}
