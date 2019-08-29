@@ -1,6 +1,6 @@
 import * as PIXI from "pixi.js";
 import { BaseContainer, BaseRoom, BaseConvexObject, IBaseConvexObjectConfig } from "./base";
-import { App } from "@cpx/core";
+import { App } from "../core/package";
 
 
 export interface IConvexObjectConfig extends IBaseConvexObjectConfig {

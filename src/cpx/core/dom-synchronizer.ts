@@ -1,7 +1,7 @@
 import * as PIXI from "pixi.js";
 import { App } from "./app";
-import { Rect, Vector4D } from "@cpx/utils/geom";
-import { BaseConvexObject } from "@cpx/display/base";
+import { Rect, Vector4D } from "../utils/geom";
+import { BaseConvexObject } from "../display/base";
 
 interface ISyncEntity {
   id: string | number;

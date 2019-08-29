@@ -1,4 +1,4 @@
-import { IConvexObjectConfig } from "@cpx/display";
+import { IConvexObjectConfig } from "../display/convex-object";
 
 export interface IResources {
   [x: string]: IConvexObjectConfig;

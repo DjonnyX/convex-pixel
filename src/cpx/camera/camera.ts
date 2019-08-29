@@ -1,9 +1,9 @@
 import { TweenMax, Expo, Sine } from "gsap";
 import * as PIXI from "pixi.js";
-import { SonarUtils } from "../utils";
+import { sonar as SonarUtils } from "../utils/package";
 import { CameraControllerManager, CameraControllerEventTypes } from "./controller";
 import { Vector2D } from "../utils/geom";
-import { BaseRoom } from "../display";
+import { BaseRoom } from "../display/base";
 
 const DEFAULT_BOUNDS = new PIXI.Rectangle(0, 0, 640, 480);
 

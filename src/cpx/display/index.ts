@@ -1,3 +1,5 @@
-export * from "./base";
-export * from "./convex-object";
-export * from "./material";
+import * as display from "./package";
+
+export {
+  display
+};

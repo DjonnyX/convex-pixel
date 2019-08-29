@@ -1,6 +1,6 @@
 import * as PIXI from "pixi.js";
-import { BaseContainer, BaseRoom, BaseConvexObject } from "@cpx/display";
-import { CameraControllerEventTypes } from "@cpx/camera/controller";
+import { BaseContainer, BaseRoom, BaseConvexObject } from "../display/base";
+import { CameraControllerEventTypes } from "../camera/controller";
 
 export class P3DCameraProcessor {
 

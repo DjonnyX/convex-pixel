@@ -1,6 +1,6 @@
 import * as PIXI from "pixi.js";
-import { SonarUtils } from "@cpx/utils";
-import { BaseRoom } from "@cpx/display/base";
+import { sonar as SonarUtils } from "../utils/package";
+import { BaseRoom } from "../display/base";
 import { DomSynchronizer } from "./dom-synchronizer";
 
 export interface IAppConfig {
