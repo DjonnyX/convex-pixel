@@ -1,13 +1,13 @@
-import * as PIXI from "pixi.js";
-import { Back } from "gsap";
-import CPX from "convex-pixel";
-import { Inventory } from "./inventory";
-import { Ripple } from "./ripple";
-import { ISceneObject } from "./interfaces";
-import IScene from "./interfaces/scene.interface";
+import * as PIXI from 'pixi.js';
+import { Back } from 'gsap';
+import CPX from 'convex-pixel';
+import { Inventory } from './inventory';
+import { Ripple } from './ripple';
+import { ISceneObject } from './interfaces';
+import IScene from './interfaces/scene.interface';
 
 export enum SceneEventTypes {
-  REPOSITION = "reposition"
+  REPOSITION = 'reposition',
 }
 
 export default class CPXScene extends CPX.display.BaseContainer {
@@ -21,20 +21,20 @@ export default class CPXScene extends CPX.display.BaseContainer {
 
   private _foregroundContainer = new PIXI.Sprite();
 
-  private _completeAnimationOutHandler = obj => {
+  private _completeAnimationOutHandler = (obj) => {
     if (obj.parent !== this._container) {
       this._foregroundContainer.removeChild(obj);
       this._container.addChild(obj);
     }
   };
 
-  private _completeAnimationInHandler = obj => {
+  private _completeAnimationInHandler = (obj) => {
     obj.removeBlur();
   };
 
-  private _startAnimationInHandler = obj => { };
+  private _startAnimationInHandler = (obj) => {};
 
-  private _selectInventoryHandler = target => {
+  private _selectInventoryHandler = (target) => {
     this.selectedInventory = target;
   };
 
@@ -57,18 +57,17 @@ export default class CPXScene extends CPX.display.BaseContainer {
 
       this._inventories.push(sprite);
 
-      sprite.addListener(
-        "select",
-        this._selectInventoryHandler
-      );
+      sprite.addListener('select', this._selectInventoryHandler);
 
       CPX.core.DomSynchronizer.add({
         id: objectData._id,
         groupId: objectData._groupId,
-        object: sprite
+        object: sprite,
       });
 
-      sprite.zIndex = objectData.depth * 100;
+      sprite.zIndex = objectData.depth * (objectData.staticDepth ? objectData.staticDepth : 0) * 100;
+      sprite.rotation = objectData.rotation || 0;
+      sprite.alpha = objectData.opacity || 1;
 
       this._container.addChild(sprite);
     }
@@ -82,7 +81,7 @@ export default class CPXScene extends CPX.display.BaseContainer {
     obj.tweenBlur.updateTo(
       {
         blur: 0,
-        ease: Back.easeOut
+        ease: Back.easeOut,
       },
       true
     );
@@ -92,14 +91,14 @@ export default class CPXScene extends CPX.display.BaseContainer {
         ease: Back.easeOut,
         onStart: undefined,
         onComplete: this._completeAnimationOutHandler,
-        onCompleteParams: [obj]
+        onCompleteParams: [obj],
       },
       true
     );
     obj.tweenPos.updateTo(
       {
         ...pos,
-        ease: Back.easeOut
+        ease: Back.easeOut,
       },
       true
     );
@@ -117,7 +116,7 @@ export default class CPXScene extends CPX.display.BaseContainer {
     obj.tweenBlur.updateTo(
       {
         blur: 0,
-        ease: Back.easeOut
+        ease: Back.easeOut,
       },
       true
     );
@@ -128,14 +127,14 @@ export default class CPXScene extends CPX.display.BaseContainer {
         onStart: this._startAnimationInHandler,
         onStartParams: [obj],
         onComplete: this._completeAnimationInHandler,
-        onCompleteParams: [obj]
+        onCompleteParams: [obj],
       },
       true
     );
     obj.tweenPos.updateTo(
       {
         ...pos,
-        ease: Back.easeOut
+        ease: Back.easeOut,
       },
       true
     );
@@ -147,7 +146,7 @@ export default class CPXScene extends CPX.display.BaseContainer {
     obj.tweenBlur.updateTo(
       {
         blur: 5,
-        ease: Back.easeOut
+        ease: Back.easeOut,
       },
       true
     );
@@ -157,14 +156,14 @@ export default class CPXScene extends CPX.display.BaseContainer {
         onStart: undefined,
         onComplete: this._completeAnimationOutHandler,
         onCompleteParams: [obj],
-        ease: Back.easeOut
+        ease: Back.easeOut,
       },
       true
     );
     obj.tweenPos.updateTo(
       {
         ...pos,
-        ease: Back.easeOut
+        ease: Back.easeOut,
       },
       true
     );
@@ -177,7 +176,7 @@ export default class CPXScene extends CPX.display.BaseContainer {
       this._selectedInventory = v;
     }
 
-    this._inventories.forEach(inventory => {
+    this._inventories.forEach((inventory) => {
       if (v === inventory) {
         if (this._selectedInventory) {
           this.animateIn(
@@ -185,22 +184,14 @@ export default class CPXScene extends CPX.display.BaseContainer {
             { x: 3, y: 3 },
             {
               x: CPX.core.App.instance.room.roomBound.width * 0.5,
-              y: CPX.core.App.instance.room.roomBound.height * 0.5
+              y: CPX.core.App.instance.room.roomBound.height * 0.5,
             }
           );
         } else {
-          this.animateOut(
-            inventory,
-            inventory.originalScale.valueOf(),
-            inventory.originalPosition.valueOf()
-          );
+          this.animateOut(inventory, inventory.originalScale.valueOf(), inventory.originalPosition.valueOf());
         }
       } else {
-        this.animateTo(
-          inventory,
-          inventory.originalScale.valueOf(),
-          inventory.originalPosition.valueOf()
-        );
+        this.animateTo(inventory, inventory.originalScale.valueOf(), inventory.originalPosition.valueOf());
       }
     });
   }

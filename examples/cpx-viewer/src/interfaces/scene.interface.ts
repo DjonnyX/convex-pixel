@@ -1,4 +1,4 @@
-import CPX from "convex-pixel";
+import CPX from 'convex-pixel';
 
 interface IMoveableObject {
   x?: number;
@@ -9,6 +9,9 @@ export interface ISceneObject extends CPX.display.IConvexObjectConfig {
   _id: number | string;
   _groupId?: number | string;
   resource?: string;
+  staticDepth?: number;
+  opacity?: number;
+  rotation?: number;
 }
 
 export default interface IScene extends IMoveableObject {

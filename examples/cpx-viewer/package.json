@@ -17,9 +17,9 @@
   "author": "Eugene Grebennikov",
   "license": "MIT",
   "dependencies": {
-    "convex-pixel": "../../dist/",
+    "convex-pixel": "../dist/",
     "gsap": "^2.1.3",
-    "pixi-filters": "^3.0.3",
+    "pixi-filters": "3.0.3",
     "pixi.js": "^5.0.4"
   },
   "devDependencies": {

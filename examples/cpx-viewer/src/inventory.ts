@@ -1,6 +1,6 @@
-import * as PIXI from "pixi.js";
-import { TweenMax, Expo, Linear } from "gsap";
-import CPX from "convex-pixel";
+import * as PIXI from 'pixi.js';
+import { TweenMax, Expo, Linear } from 'gsap';
+import CPX from 'convex-pixel';
 
 export class Inventory<C extends CPX.display.IConvexObjectConfig> extends CPX.display.ConvexObject<C> {
   public readonly tweenPos: TweenMax;
@@ -30,67 +30,69 @@ export class Inventory<C extends CPX.display.IConvexObjectConfig> extends CPX.di
   private _actualPov = CPX.utils.geom.Vector2D.new();
 
   private _clickHandler = () => {
-    this.emit("select", this);
+    this.emit('select', this);
   };
 
   constructor(stage: CPX.display.BaseContainer, config: C) {
     super(stage, config);
 
-    this._container.addListener("rightclick", this._clickHandler);
-    this._container.addListener("pointertap", this._clickHandler);
+    if (config.interactive) {
+      this._container.addListener('rightclick', this._clickHandler);
+      this._container.addListener('pointertap', this._clickHandler);
 
-    this.tweenPos = new TweenMax(this.position, 1, {});
-    this.tweenScale = new TweenMax(this.scale, 1, {});
+      this.tweenPos = new TweenMax(this.position, 1, {});
+      this.tweenScale = new TweenMax(this.scale, 1, {});
 
-    this.blurFilter = new PIXI.filters.BlurFilter(1, 2, 1);
-    this.blurFilter.blur = 0;
-    this.tweenBlur = new TweenMax(this.blurFilter, 1, {});
+      this.blurFilter = new PIXI.filters.BlurFilter(1, 2, 1);
+      this.blurFilter.blur = 0;
+      this.tweenBlur = new TweenMax(this.blurFilter, 1, {});
 
-    this._tweenPOV = new TweenMax(this._animatedCircularPOV, 2.4, {
-      bezier: {
-        tepe: "quadratic",
-        values: [
-          /*p1*/
-          { x: 0, y: 0 },
-          { x: -5, y: -2 },
-          { x: 0, y: 0 },
-          /*p2*/
-          { x: 5, y: 2 },
-          { x: 0, y: 0 }
-        ]
-      } /*bezier end*/,
-      onUpdate: this._animationUpdatePOVHandler,
-      onComplete: this._animationCompletePOVHandler,
-      ease: Expo.easeOut,
-      paused: true
-    });
+      this._tweenPOV = new TweenMax(this._animatedCircularPOV, 2.4, {
+        bezier: {
+          tepe: 'quadratic',
+          values: [
+            /*p1*/
+            { x: 0, y: 0 },
+            { x: -5, y: -2 },
+            { x: 0, y: 0 },
+            /*p2*/
+            { x: 5, y: 2 },
+            { x: 0, y: 0 },
+          ],
+        } /*bezier end*/,
+        onUpdate: this._animationUpdatePOVHandler,
+        onComplete: this._animationCompletePOVHandler,
+        ease: Expo.easeOut,
+        paused: true,
+      });
 
-    this._tweenCircularPOV = new TweenMax(this._animatedCircularPOV, 9, {
-      bezier: {
-        tepe: "quadratic",
-        values: [
-          { x: 0, y: 0 },
-          { x: 0, y: -1 },
-          { x: 1, y: -1 },
-          { x: 1, y: 1 },
-          { x: 0, y: 1 },
-          { x: 0, y: 0 },
-          /*p4*/
-          { x: 0, y: 0 },
-          { x: 0, y: 1 },
-          { x: -1, y: 1 },
-          { x: 1, y: 1 },
-          { x: 0, y: 1 },
-          { x: 0, y: 0 }
-        ]
-      } /*bezier end*/,
-      onUpdate: this._animationUpdateCircularPOVHandler,
-      onComplete: this._animationCompleteCircularPOVHandler,
-      ease: Linear.easeNone,
-      paused: true
-    });
+      this._tweenCircularPOV = new TweenMax(this._animatedCircularPOV, 9, {
+        bezier: {
+          tepe: 'quadratic',
+          values: [
+            { x: 0, y: 0 },
+            { x: 0, y: -1 },
+            { x: 1, y: -1 },
+            { x: 1, y: 1 },
+            { x: 0, y: 1 },
+            { x: 0, y: 0 },
+            /*p4*/
+            { x: 0, y: 0 },
+            { x: 0, y: 1 },
+            { x: -1, y: 1 },
+            { x: 1, y: 1 },
+            { x: 0, y: 1 },
+            { x: 0, y: 0 },
+          ],
+        } /*bezier end*/,
+        onUpdate: this._animationUpdateCircularPOVHandler,
+        onComplete: this._animationCompleteCircularPOVHandler,
+        ease: Linear.easeNone,
+        paused: true,
+      });
 
-    this._tweenCircularPOVBack = new TweenMax(this._animatedCircularPOV, 1, {});
+      this._tweenCircularPOVBack = new TweenMax(this._animatedCircularPOV, 1, {});
+    }
   }
 
   private _animationUpdatePOVHandler = () => {
@@ -107,7 +109,7 @@ export class Inventory<C extends CPX.display.IConvexObjectConfig> extends CPX.di
     this.recalculateCameraPOV();
   };
 
-  private _animationCompleteCircularPOVHandler = () => { };
+  private _animationCompleteCircularPOVHandler = () => {};
 
   public animatePOV() {
     this._tweenCircularPOVBack.kill();
@@ -120,12 +122,8 @@ export class Inventory<C extends CPX.display.IConvexObjectConfig> extends CPX.di
   public setPOV(x: number, y: number) {
     this._actualPov.set(x, y);
     super.setPOV(
-      x +
-      this._animatedPOV.x * 0.5 * this.scale.x +
-      this._animatedCircularPOV.x * 1.15 * this.scale.x,
-      y +
-      this._animatedPOV.y * this.scale.y +
-      this._animatedCircularPOV.y * this.scale.y
+      x + this._animatedPOV.x * 0.5 * this.scale.x + this._animatedCircularPOV.x * 1.15 * this.scale.x,
+      y + this._animatedPOV.y * this.scale.y + this._animatedCircularPOV.y * this.scale.y
     );
   }
 

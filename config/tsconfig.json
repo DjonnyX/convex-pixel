@@ -11,13 +11,8 @@
     "importHelpers": false,
     "baseUrl": "../src",
     "paths": {
-      "@cpx/*": [
-        "./*",
-        "cpx/*",
-      ]
+      "@cpx/*": ["./*", "cpx/*"]
     }
   },
-  "include": [
-    "../src**/*",
-  ],
+  "include": ["../src**/*"]
 }

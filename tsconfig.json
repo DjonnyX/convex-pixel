@@ -3,15 +3,12 @@
     "moduleResolution": "node",
     "module": "esnext",
     "target": "es5",
-    "lib": [
-      "dom",
-      "es2018"
-    ],
+    "lib": ["dom", "es2018"],
     "strict": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "jsx": "react",
-    "sourceMap": true,
+    "sourceMap": false,
     "stripInternal": true,
     "declaration": true,
     "declarationMap": true,
@@ -27,14 +24,9 @@
     ],
     "baseUrl": "./src",
     "paths": {
-      "@cpx/*": [
-        "./*",
-        "cpx/*",
-      ]
+      "@cpx/*": ["./*", "cpx/*"]
     }
   },
-  "include": [
-    "./src**/*",
-  ],
+  "include": ["./src**/*"],
   "compileOnSave": false
 }

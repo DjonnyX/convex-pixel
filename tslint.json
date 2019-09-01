@@ -1,9 +1,5 @@
 {
-  "extends": [
-    "tslint:recommended",
-    "tslint-config-standard",
-    "tslint-config-prettier"
-  ],
+  "extends": ["tslint:recommended", "tslint-config-standard", "tslint-config-prettier"],
   "rules": {
     "array-type": false,
     "arrow-parens": false,
@@ -11,10 +7,7 @@
       "severity": "warning"
     },
     "max-classes-per-file": false,
-    "max-line-length": [
-      true,
-      140
-    ],
+    "max-line-length": [true, 140],
     "member-access": false,
     "member-ordering": [
       true,
@@ -39,31 +32,14 @@
       }
     ],
     "no-consecutive-blank-lines": false,
-    "no-console": [
-      true,
-      "debug",
-      "info",
-      "time",
-      "timeEnd",
-      "trace"
-    ],
+    "no-console": [true, "debug", "info", "time", "timeEnd", "trace"],
     "no-empty": false,
-    "no-inferrable-types": [
-      true,
-      "ignore-params"
-    ],
-    "variable-name": [
-      true,
-      "check-format",
-      "allow-leading-underscore"
-    ],
+    "no-inferrable-types": [true, "ignore-params"],
+    "variable-name": [true, "check-format", "allow-leading-underscore"],
     "naming-convention": [
       true,
       {
-        "type": [
-          "member",
-          "method"
-        ],
+        "type": ["member", "method"],
         "modifiers": "private",
         "leadingUnderscore": "require",
         "prefix": "_"
@@ -74,19 +50,11 @@
     "no-switch-case-fall-through": true,
     "no-use-before-declare": true,
     "no-var-requires": false,
-    "one-variable-per-declaration": [
-      false
-    ],
-    "object-literal-key-quotes": [
-      true,
-      "as-needed"
-    ],
+    "one-variable-per-declaration": [false],
+    "object-literal-key-quotes": [true, "as-needed"],
     "object-literal-sort-keys": false,
     "ordered-imports": false,
-    "quotemark": [
-      true,
-      "double"
-    ],
+    "quotemark": [true, "double", "single"],
     "trailing-comma": false,
     "no-conflicting-lifecycle": true,
     "no-host-metadata-property": true,

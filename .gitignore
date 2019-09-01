@@ -22,4 +22,5 @@ dist
 *.tgz
 package
 
+package-lock.json
 yarn.lock

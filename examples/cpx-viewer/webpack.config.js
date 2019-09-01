@@ -41,12 +41,6 @@ module.exports = {
         },
       ],
     },
-    proxy: [
-      {
-        target: 'https://cpx.eugene-grebennikov.pro/',
-        secure: false,
-      },
-    ],
   },
   optimization: {
     minimizer: [
