@@ -8,7 +8,7 @@
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "jsx": "react",
-    "sourceMap": false,
+    "sourceMap": true,
     "stripInternal": true,
     "declaration": true,
     "declarationMap": true,
@@ -27,6 +27,6 @@
       "@cpx/*": ["./*", "cpx/*"]
     }
   },
-  "include": ["./src**/*"],
+  "include": ["./src/**/*"],
   "compileOnSave": false
 }
