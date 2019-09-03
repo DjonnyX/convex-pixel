@@ -10,7 +10,7 @@ interface ISyncEntity {
 }
 
 export enum EventTypes {
-  CHANGE = "change"
+  CHANGE = "change",
 }
 
 /**
@@ -21,7 +21,7 @@ export class DomSynchronizer extends PIXI.utils.EventEmitter {
   private static _instance: DomSynchronizer;
 
   public static add(syncEntity: ISyncEntity) {
-    // DomSynchronizer._instance.add(syncEntity);
+    DomSynchronizer._instance.add(syncEntity);
   }
 
   constructor() {
@@ -30,9 +30,9 @@ export class DomSynchronizer extends PIXI.utils.EventEmitter {
     App.instance.pixi.renderer.addListener("prerender", this._postrenderHandler);
   }
 
-  public init(...params: any[]) { }
+  public init(...params: any[]) {}
 
-  public destroy(...params: any[]) { }
+  public destroy(...params: any[]) {}
 
   public add(syncEntity: ISyncEntity) {
     if (DomSynchronizer._syncronizedObjects.indexOf(syncEntity) === -1) {
@@ -72,12 +72,7 @@ export class DomSynchronizer extends PIXI.utils.EventEmitter {
       for (const obj of map[id]) {
         const abs = obj.object.container ? obj.object.container.getGlobalPosition() : obj.object.getGlobalPosition();
         const bounds = obj.object.getBounds();
-        const helper = Vector4D.new(
-          abs.x,
-          abs.y,
-          (abs.x + bounds.width),
-          (abs.y + bounds.height)
-        );
+        const helper = Vector4D.new(abs.x, abs.y, abs.x + bounds.width, abs.y + bounds.height);
         bound.set(
           Math.min(bound.x || helper.x, helper.x),
           Math.min(bound.y || helper.y, helper.y),
@@ -91,8 +86,8 @@ export class DomSynchronizer extends PIXI.utils.EventEmitter {
       }
       demention.x = bound.x;
       demention.y = bound.y;
-      demention.width = (bound.width - bound.x);
-      demention.height = (bound.height - bound.y);
+      demention.width = bound.width - bound.x;
+      demention.height = bound.height - bound.y;
 
       // unlink for best perfomance
       bound.free();

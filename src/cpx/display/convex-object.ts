@@ -2,7 +2,6 @@ import * as PIXI from "pixi.js";
 import { BaseContainer, BaseRoom, BaseConvexObject, IBaseConvexObjectConfig } from "./base";
 import { App } from "../core/package";
 
-
 export interface IConvexObjectConfig extends IBaseConvexObjectConfig {
   x?: number;
   y?: number;
@@ -13,18 +12,10 @@ export interface IConvexObjectConfig extends IBaseConvexObjectConfig {
    */
   hitArea?: number[];
   interactive?: boolean;
-  isBackground: boolean;
-  selection: {
-    weight: number;
-    color: number;
-  };
+  isBackground?: boolean;
 }
 
-export class ConvexObject<C extends IConvexObjectConfig> extends BaseConvexObject<
-  C
-  > {
-
-
+export class ConvexObject<C extends IConvexObjectConfig> extends BaseConvexObject<C> {
   constructor(stage: BaseContainer, config: C) {
     super(stage, config);
   }
@@ -47,19 +38,17 @@ export class ConvexObject<C extends IConvexObjectConfig> extends BaseConvexObjec
     (App.instance.room as BaseRoom).recalculateCameraPOV();
   }
 
-  public pointerHover() { }
+  public pointerHover() {}
 
-  public pointerOutside() { }
+  public pointerOutside() {}
 
   public dispose() {
-
     super.destroy();
   }
 
   protected loadingComplete() {
-
     if (!this._container) {
-      throw Error("Propery \"_container\" is not defined.")
+      throw Error(`Propery "_container" is not defined.`);
     }
 
     if (this._config.interactive) {
