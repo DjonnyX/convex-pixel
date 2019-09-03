@@ -3,6 +3,8 @@ import { ICameraController } from "./interfaces";
 import { Vector2D, IVector2D } from "../../utils/geom/vector";
 import { Camera } from "../camera";
 
+const GAIN = 4;
+
 export class CameraGyroscopeController implements ICameraController {
   public camera: Camera | undefined;
 
@@ -17,51 +19,34 @@ export class CameraGyroscopeController implements ICameraController {
 
   constructor() {
     App.instance.pixi.stage.interactive = true;
-    window.addEventListener(
-      "MozOrientation",
-      this._handlerOrientationEvent,
-      true
-    );
-    window.addEventListener(
-      "deviceorientation",
-      this._handlerOrientationEvent,
-      true
-    );
+    window.addEventListener("deviceorientation", this._handlerOrientationEvent, true);
   }
 
   public destroy() {
-    window.removeEventListener("mousemove", this._handlerOrientationEvent);
+    window.removeEventListener("deviceorientation", this._handlerOrientationEvent);
     this.onMove = this.onPOV = this.onZoom = this.onRotate = undefined;
   }
 
   protected _handlerOrientationEvent = (event: any) => {
-
     if (!this.camera) {
-      throw Error("Property \"camera\" is not defined.")
+      throw Error("Property \"camera\" is not defined.");
     }
 
     const sceneBounds = this.camera.room.roomBound;
     const sWidth = sceneBounds.width * this.camera.room.scale.x;
     const sHeight = sceneBounds.height * this.camera.room.scale.y;
 
-    const x = event.gamma
-      ? event.gamma
-      : (event.x / 90) * this.camera.viewport.width;
-    const y = event.beta
-      ? event.beta
-      : (event.y / 90) * this.camera.viewport.width;
-    const z = event.alpha
-      ? event.alpha
-      : (event.z / 90) * this.camera.viewport.height;
-
+    const x = event.gamma ? event.gamma : (event.x / 90) * this.camera.viewport.width;
+    const y = event.beta ? event.beta : (event.y / 90) * this.camera.viewport.width;
+    const z = event.alpha ? event.alpha : (event.z / 90) * this.camera.viewport.height;
 
     if (this._initialX === undefined || this._initialY === undefined || this._initialZ === undefined) {
       this._initialX = x;
       this._initialY = y;
       this._initialZ = z;
     } else {
-      const xx = this._initialX - x;
-      const yy = this._initialY - y;
+      const xx = (this._initialX - x) * GAIN;
+      const yy = (this._initialY - y) * GAIN;
       /*
       let sx = xx * this.camera.xOffset * 20;
       let sy = yy * this.camera.yOffset * 20;
@@ -78,12 +63,8 @@ export class CameraGyroscopeController implements ICameraController {
         this.onPOV(Vector2D.new(xx, yy));
       }
 
-      const sx =
-        (sWidth - this.camera.viewport.width) /
-        (this.camera.viewport.width / xx);
-      const sy =
-        (sHeight - this.camera.viewport.height) /
-        (this.camera.viewport.height / yy);
+      const sx = (sWidth - this.camera.viewport.width) / (this.camera.viewport.width / xx);
+      const sy = (sHeight - this.camera.viewport.height) / (this.camera.viewport.height / yy);
 
       if (this.onMove) {
         this.onMove(Vector2D.new(sx, sy));
