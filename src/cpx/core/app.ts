@@ -85,14 +85,14 @@ export class App<R extends BaseRoom = any> {
   }
 
   private _domElementResizeHandler = () => {
-    this.pixi.view.width = this._viewDomElement.clientWidth;
-    this.pixi.view.height = this._viewDomElement.clientHeight;
+    this.pixi.view.width = this._viewDomElement.offsetWidth;
+    this.pixi.view.height = this._viewDomElement.offsetHeight;
   };
 
   private addListeners() {
     document.addEventListener("resize", this._domElementResizeHandler);
 
-    this._domElementResizeSonarDetector = new SonarUtils.SonarDetector(this._viewDomElement, ["clientWidth", "clientHeight"], "resize");
+    this._domElementResizeSonarDetector = new SonarUtils.SonarDetector(this._viewDomElement, ["offsetWidth", "offsetHeight"], "resize");
     this._domElementResizeSonarDetector.detectChanges(true);
     this._domElementResizeSonarDetector.addListener("resize", this._domElementResizeHandler);
 
