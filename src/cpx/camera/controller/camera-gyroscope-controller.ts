@@ -5,7 +5,7 @@ import { Camera } from "../camera";
 
 const GAIN = 4;
 
-export class CameraGyroscopeController implements ICameraController {
+export class CameraGyroscopeController<T extends App = any> implements ICameraController {
   public camera: Camera | undefined;
 
   public onMove: ((target: IVector2D) => void) | undefined;
@@ -17,8 +17,8 @@ export class CameraGyroscopeController implements ICameraController {
   private _initialY: number | undefined;
   private _initialZ: number | undefined;
 
-  constructor() {
-    App.instance.pixi.stage.interactive = true;
+  constructor(public readonly context: T) {
+    context.pixi.stage.interactive = true;
     window.addEventListener("deviceorientation", this._handlerOrientationEvent, true);
   }
 
@@ -29,7 +29,7 @@ export class CameraGyroscopeController implements ICameraController {
 
   protected _handlerOrientationEvent = (event: any) => {
     if (!this.camera) {
-      throw Error("Property \"camera\" is not defined.");
+      throw Error(`Property "camera" is not defined.`);
     }
 
     const sceneBounds = this.camera.room.roomBound;

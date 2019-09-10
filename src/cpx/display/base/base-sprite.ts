@@ -1,7 +1,7 @@
 import * as PIXI from "pixi.js";
 import { MapTypes } from "../material";
 import { BaseContainer } from "./base-container";
-
+import { App } from "@cpx/cpx/core/app";
 
 interface IResources<T = any> {
   diffuse?: T;
@@ -14,16 +14,14 @@ export interface IBaseConvexObjectConfig {
   depthMap?: string;
 }
 
-export class BaseConvexObject<
-  C extends IBaseConvexObjectConfig = any
-  > extends BaseContainer {
+export class BaseConvexObject<T extends App = any, C extends IBaseConvexObjectConfig = any> extends BaseContainer {
   protected _diffuseMapSprite: PIXI.Sprite | undefined;
 
   protected _depthMapSprite: PIXI.Sprite | undefined;
 
   protected _container: PIXI.Container | undefined;
 
-  protected _textures: IResources<PIXI.Texture> = {diffuse: undefined, depth: undefined};
+  protected _textures: IResources<PIXI.Texture> = { diffuse: undefined, depth: undefined };
 
   protected _displacementFilter: PIXI.filters.DisplacementFilter | undefined;
 
@@ -31,8 +29,8 @@ export class BaseConvexObject<
 
   protected _filters: PIXI.Filter[] = [];
 
-  constructor(public readonly stage: BaseContainer, protected _config: C) {
-    super(stage);
+  constructor(public readonly context: T, public readonly stage: BaseContainer, protected _config: C) {
+    super(context, stage);
 
     this.initialize();
   }
@@ -76,7 +74,6 @@ export class BaseConvexObject<
   }
 
   protected initialize() {
-
     this._container = new PIXI.Container();
     this.addChild(this._container);
 
@@ -89,26 +86,21 @@ export class BaseConvexObject<
       this._loader.add(MapTypes.DEPTH, this._config.depthMap);
     }
 
-    this._loader.load((
-        loader: PIXI.Loader,
-        resources: Partial<Record<string, PIXI.LoaderResource>>
-      ) => {
-        if (resources.diffuse) {
-          this._textures.diffuse = resources.diffuse.texture;
-        }
-        if (resources.depth) {
-          this._textures.depth = resources.depth.texture;
-        }
-
-        this.create();
+    this._loader.load((loader: PIXI.Loader, resources: Partial<Record<string, PIXI.LoaderResource>>) => {
+      if (resources.diffuse) {
+        this._textures.diffuse = resources.diffuse.texture;
       }
-    );
+      if (resources.depth) {
+        this._textures.depth = resources.depth.texture;
+      }
+
+      this.create();
+    });
   }
 
   protected create() {
-
     if (!this._container) {
-      throw new Error("Property \"container\" is not defined.");
+      throw new Error(`Property "container" is not defined.`);
     }
 
     if (this._textures.diffuse) {
@@ -122,9 +114,7 @@ export class BaseConvexObject<
 
         this._container.addChild(this._depthMapSprite);
 
-        this._displacementFilter = new PIXI.filters.DisplacementFilter(
-          this._depthMapSprite, 0
-        );
+        this._displacementFilter = new PIXI.filters.DisplacementFilter(this._depthMapSprite, 0);
         this._displacementFilter.autoFit = true;
         this._filters.push(this._displacementFilter);
       }

@@ -4,7 +4,7 @@ import { IVector2D, Vector2D } from "../../utils/geom";
 import { FaceTrackerService } from "../service";
 import { Camera } from "../camera";
 
-export class CameraFaceTrackerController implements ICameraController {
+export class CameraFaceTrackerController<T extends App = any> implements ICameraController {
   public camera: Camera | undefined;
 
   public onMove: ((data: IVector2D) => void) | undefined;
@@ -16,8 +16,8 @@ export class CameraFaceTrackerController implements ICameraController {
 
   protected _faceTrackerService: FaceTrackerService;
 
-  constructor() {
-    App.instance.pixi.stage.interactive = true;
+  constructor(public readonly context: T) {
+    context.pixi.stage.interactive = true;
     this._faceTrackerService = new FaceTrackerService();
     this._faceTrackerService.addListener("move", this._handlerFaceMove);
   }
@@ -85,11 +85,8 @@ export class CameraFaceTrackerController implements ICameraController {
       this.onPOV(Vector2D.new(xx, yy));
     }
 
-    const sx =
-      (sWidth - this.camera.viewport.width) * (normalizedX / this.camera.viewport.width);
-    const sy =
-      (sHeight - this.camera.viewport.height) *
-      (normalizedY / this.camera.viewport.height);
+    const sx = (sWidth - this.camera.viewport.width) * (normalizedX / this.camera.viewport.width);
+    const sy = (sHeight - this.camera.viewport.height) * (normalizedY / this.camera.viewport.height);
 
     if (this.onMove) {
       this.onMove(Vector2D.new(sx, sy));

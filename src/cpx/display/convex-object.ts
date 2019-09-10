@@ -15,9 +15,9 @@ export interface IConvexObjectConfig extends IBaseConvexObjectConfig {
   isBackground?: boolean;
 }
 
-export class ConvexObject<C extends IConvexObjectConfig> extends BaseConvexObject<C> {
-  constructor(stage: BaseContainer, config: C) {
-    super(stage, config);
+export class ConvexObject<T extends App = any, C extends IConvexObjectConfig = any> extends BaseConvexObject<T, C> {
+  constructor(public readonly context: T, stage: BaseContainer, config: C) {
+    super(context, stage, config);
   }
 
   public setPOV(x: number, y: number) {
@@ -26,8 +26,8 @@ export class ConvexObject<C extends IConvexObjectConfig> extends BaseConvexObjec
     }
 
     const depth = this._config.isBackground ? 1 : this._config.depth;
-    this._displacementFilter.scale.x = x * depth * App.instance.room.camera.maxZoom;
-    this._displacementFilter.scale.y = y * depth * App.instance.room.camera.maxZoom;
+    this._displacementFilter.scale.x = x * depth * this.context.room.camera.maxZoom;
+    this._displacementFilter.scale.y = y * depth * this.context.room.camera.maxZoom;
   }
 
   /**
@@ -35,7 +35,7 @@ export class ConvexObject<C extends IConvexObjectConfig> extends BaseConvexObjec
    * Repeat сalls are blocked
    */
   public recalculateCameraPOV() {
-    (App.instance.room as BaseRoom).recalculateCameraPOV();
+    (this.context.room as BaseRoom).recalculateCameraPOV();
   }
 
   public pointerHover() {}

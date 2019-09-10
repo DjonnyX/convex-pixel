@@ -1,16 +1,12 @@
 import * as PIXI from "pixi.js";
+import { App } from "@cpx/cpx/core/app";
 
 export enum SceneEventTypes {
-  REPOSITION = "reposition"
+  REPOSITION = "reposition",
 }
 
-export class BaseContainer extends PIXI.Container {
-
-  public readonly stage: BaseContainer | undefined;
-
-  constructor(stage?: BaseContainer | undefined) {
+export class BaseContainer<T extends App = any, S extends BaseContainer = any> extends PIXI.Container {
+  constructor(public readonly context: T, public readonly stage?: S) {
     super();
-
-    this.stage = stage;
   }
 }

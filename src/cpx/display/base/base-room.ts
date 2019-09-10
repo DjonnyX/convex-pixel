@@ -1,25 +1,20 @@
 import * as PIXI from "pixi.js";
 import { Camera, ICameraConfig, ICameraController } from "../../camera/package";
-import { P3DCameraProcessor } from "../../core/package";
+import { P3DCameraProcessor, App } from "../../core/package";
 import { display as DisplayUtils, sonar as SonarUtils } from "../../utils/package";
 import { BaseContainer } from "./base-container";
 
 export interface IRoomOptions {
   camera: {
-    class: new (
-      room: BaseRoom,
-      viewport?: PIXI.Rectangle,
-      config?: ICameraConfig
-    ) => Camera;
+    class: new (room: BaseRoom, viewport?: PIXI.Rectangle, config?: ICameraConfig) => Camera;
     config: ICameraConfig;
-    controllers: Array<new () => ICameraController>;
+    controllers: Array<new (context: App) => ICameraController>;
     viewport?: PIXI.Rectangle;
   };
   autosize: DisplayUtils.RatioFitTypes;
 }
 
-export class BaseRoom extends BaseContainer {
-
+export class BaseRoom<C extends App = any> extends BaseContainer<C> {
   public get camera() {
     return this._camera;
   }
@@ -38,24 +33,20 @@ export class BaseRoom extends BaseContainer {
 
   private _sonarResize: SonarUtils.SonarDebounce;
 
-  constructor(options: IRoomOptions) {
-    super();
+  constructor(context: C, options: IRoomOptions) {
+    super(context);
 
     this._autosize = options.autosize || DisplayUtils.RatioFitTypes.NONE;
 
     // Create a camera
-    this._camera = new options.camera.class(
-      this,
-      options.camera.viewport,
-      options.camera.config
-    );
+    this._camera = new options.camera.class(this, options.camera.viewport, options.camera.config);
 
     for (const controller of options.camera.controllers) {
       if (!this._camera.controllers) {
         continue;
       }
 
-      this._camera.controllers.add(new controller());
+      this._camera.controllers.add(new controller(context));
     }
 
     this._cameraProcessor = new P3DCameraProcessor(this);
@@ -106,5 +97,5 @@ export class BaseRoom extends BaseContainer {
 
   private _resizeSonarHandler = () => {
     this.resetScaleFactor();
-  }
+  };
 }
