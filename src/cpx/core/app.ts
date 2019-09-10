@@ -17,12 +17,6 @@ export interface IAppConfig {
 }
 
 export class App<R extends BaseRoom = any> {
-  public static get instance() {
-    return this._instance;
-  }
-
-  private static _instance: App;
-
   public get room() {
     return this._room;
   }
@@ -61,9 +55,8 @@ export class App<R extends BaseRoom = any> {
       forceFXAA: config.forceFXAA,
       powerPreference: config.powerPreference,
     });
-    App._instance = this;
 
-    this._domSynchronizer = new DomSynchronizer();
+    this._domSynchronizer = new DomSynchronizer(this);
 
     this._viewDomElement.appendChild(this.pixi.view);
 
