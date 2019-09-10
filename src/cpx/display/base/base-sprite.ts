@@ -29,8 +29,8 @@ export class BaseConvexObject<T extends App = any, C extends IBaseConvexObjectCo
 
   protected _filters: PIXI.Filter[] = [];
 
-  constructor(public readonly context: T, public readonly stage: BaseContainer, protected _config: C) {
-    super(context, stage);
+  constructor(public readonly appContext: T, public readonly cpxStage: BaseContainer, protected _config: C) {
+    super(appContext, cpxStage);
 
     this.initialize();
   }

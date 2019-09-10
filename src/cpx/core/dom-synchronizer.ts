@@ -24,10 +24,10 @@ export class DomSynchronizer<C extends App = any> extends PIXI.utils.EventEmitte
     DomSynchronizer._instance.add(syncEntity);
   }
 
-  constructor(public readonly context: C) {
+  constructor(public readonly appContext: C) {
     super();
     DomSynchronizer._instance = this;
-    context.pixi.renderer.addListener("prerender", this._postrenderHandler);
+    appContext.pixi.renderer.addListener("prerender", this._postrenderHandler);
   }
 
   public init(...params: any[]) {}

@@ -1,4 +1,4 @@
-import { App } from "../../core/package";
+import { App } from "../../core/app";
 import { ICameraController } from "./interfaces";
 import { Vector2D, IVector2D } from "../../utils/geom/vector";
 import { Camera } from "../camera";
@@ -17,8 +17,8 @@ export class CameraGyroscopeController<T extends App = any> implements ICameraCo
   private _initialY: number | undefined;
   private _initialZ: number | undefined;
 
-  constructor(public readonly context: T) {
-    context.pixi.stage.interactive = true;
+  constructor(public readonly appContext: T) {
+    appContext.pixi.stage.interactive = true;
     window.addEventListener("deviceorientation", this._handlerOrientationEvent, true);
   }
 
