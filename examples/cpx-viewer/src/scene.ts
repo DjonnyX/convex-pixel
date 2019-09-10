@@ -10,10 +10,10 @@ export enum SceneEventTypes {
   REPOSITION = 'reposition',
 }
 
-export default class CPXScene extends CPX.display.BaseContainer {
-  private _inventories = Array<Inventory<ISceneObject>>();
+export default class CPXScene<C extends CPX.core.App = any> extends CPX.display.BaseContainer {
+  private _inventories = Array<Inventory<C, ISceneObject>>();
 
-  private _selectedInventory: Inventory<ISceneObject>;
+  private _selectedInventory: Inventory<C, ISceneObject>;
 
   private _container = new PIXI.Sprite();
 
@@ -38,8 +38,8 @@ export default class CPXScene extends CPX.display.BaseContainer {
     this.selectedInventory = target;
   };
 
-  constructor(protected _data: IScene) {
-    super(null);
+  constructor(context: C, protected _data: IScene) {
+    super(context, null);
 
     this.addChild(this._container);
     this.addChild(this._ripple);
@@ -53,7 +53,7 @@ export default class CPXScene extends CPX.display.BaseContainer {
   public build() {
     for (const objectData of this._data.objects) {
       const resource = CPX.core.ResourceManager.getResource(objectData.resource);
-      const sprite = new Inventory(this, { ...objectData, ...resource });
+      const sprite = new Inventory(this.context, this, { ...objectData, ...resource });
 
       this._inventories.push(sprite);
 
@@ -106,7 +106,7 @@ export default class CPXScene extends CPX.display.BaseContainer {
 
   private animateIn(obj, scale, pos) {
     obj.animatePOV();
-    this._ripple.in(obj.position, CPX.core.App.instance.room.roomBound, 0xffffff);
+    this._ripple.in(obj.position, this.context.room.roomBound, 0xffffff);
 
     if (obj.parent !== this._foregroundContainer) {
       this._container.removeChild(obj);
@@ -169,7 +169,7 @@ export default class CPXScene extends CPX.display.BaseContainer {
     );
   }
 
-  public set selectedInventory(v: Inventory<ISceneObject>) {
+  public set selectedInventory(v: Inventory<C, ISceneObject>) {
     if (this._selectedInventory === v) {
       this._selectedInventory = null;
     } else {
@@ -183,8 +183,8 @@ export default class CPXScene extends CPX.display.BaseContainer {
             inventory,
             { x: 3, y: 3 },
             {
-              x: CPX.core.App.instance.room.roomBound.width * 0.5,
-              y: CPX.core.App.instance.room.roomBound.height * 0.5,
+              x: this.context.room.roomBound.width * 0.5,
+              y: this.context.room.roomBound.height * 0.5,
             }
           );
         } else {

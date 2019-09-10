@@ -16,7 +16,7 @@ export enum EventTypes {
 /**
  * Sinchronization p3d objects in dom space
  */
-export class DomSynchronizer extends PIXI.utils.EventEmitter {
+export class DomSynchronizer<C extends App = any> extends PIXI.utils.EventEmitter {
   private static _syncronizedObjects = new Array<ISyncEntity>();
   private static _instance: DomSynchronizer;
 
@@ -24,10 +24,10 @@ export class DomSynchronizer extends PIXI.utils.EventEmitter {
     DomSynchronizer._instance.add(syncEntity);
   }
 
-  constructor() {
+  constructor(public readonly context: C) {
     super();
     DomSynchronizer._instance = this;
-    App.instance.pixi.renderer.addListener("prerender", this._postrenderHandler);
+    context.pixi.renderer.addListener("prerender", this._postrenderHandler);
   }
 
   public init(...params: any[]) {}

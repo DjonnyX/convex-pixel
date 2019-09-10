@@ -1,27 +1,27 @@
-import CPX from "convex-pixel";
-import CPXScene from "./scene";
-import IScene, { ISceneObject } from "./interfaces/scene.interface";
+import CPX from 'convex-pixel';
+import CPXScene from './scene';
+import IScene, { ISceneObject } from './interfaces/scene.interface';
 
 interface ICPXViewverRoomOptions {
   camera: CPX.camera.ICameraConfig;
   autosize: CPX.utils.display.RatioFitTypes;
 }
 
-export default class CPXViewverRoom extends CPX.display.BaseRoom {
+export default class CPXViewverRoom<C extends CPX.core.App = any> extends CPX.display.BaseRoom<C> {
   protected _sceneCollection: IScene[];
 
-  constructor(config: ICPXViewverRoomOptions) {
-    super({
+  constructor(context: C, config: ICPXViewverRoomOptions) {
+    super(context, {
       camera: {
         class: CPX.camera.Camera,
         config: config.camera,
         controllers: [
           CPX.camera.CameraMouseController,
-          CPX.camera.CameraGyroscopeController
+          CPX.camera.CameraGyroscopeController,
           /*CPX.camera.CameraFaceTrackerController*/
-        ]
+        ],
       },
-      autosize: config.autosize
+      autosize: config.autosize,
     });
   }
 
@@ -47,13 +47,13 @@ export default class CPXViewverRoom extends CPX.display.BaseRoom {
       // Нужен выделенный интерфейс
       const sceneDescriptor: IScene = { objects: expandedCollectio };
 
-      const scene = new CPXScene(sceneDescriptor);
+      const scene = new CPXScene(this.context, sceneDescriptor);
       this.addChild(scene);
       return;
     }
 
     for (const s of this.scenes) {
-      const scene = new CPXScene(s);
+      const scene = new CPXScene(this.context, s);
       scene.x = s.x || 0;
       scene.y = s.y || 0;
       this.addChild(scene);

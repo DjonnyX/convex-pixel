@@ -2,7 +2,7 @@ import * as PIXI from 'pixi.js';
 import { TweenMax, Expo, Linear } from 'gsap';
 import CPX from 'convex-pixel';
 
-export class Inventory<C extends CPX.display.IConvexObjectConfig> extends CPX.display.ConvexObject<C> {
+export class Inventory<T extends CPX.core.App, C extends CPX.display.IConvexObjectConfig> extends CPX.display.ConvexObject<T, C> {
   public readonly tweenPos: TweenMax;
 
   public readonly tweenScale: TweenMax;
@@ -33,8 +33,8 @@ export class Inventory<C extends CPX.display.IConvexObjectConfig> extends CPX.di
     this.emit('select', this);
   };
 
-  constructor(stage: CPX.display.BaseContainer, config: C) {
-    super(stage, config);
+  constructor(context: T, stage: CPX.display.BaseContainer, config: C) {
+    super(context, stage, config);
 
     if (config.interactive) {
       this._container.addListener('rightclick', this._clickHandler);

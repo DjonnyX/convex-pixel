@@ -1,6 +1,6 @@
-import CPXViewverRoom from "./room";
-import CPX from "convex-pixel";
-import IScene from "./interfaces/scene.interface";
+import CPXViewverRoom from './room';
+import CPX from 'convex-pixel';
+import IScene from './interfaces/scene.interface';
 
 export interface IMenuConfig {
   camera: CPX.camera.ICameraConfig;
@@ -19,7 +19,6 @@ const DEFAULT_ROOM_WIDTH = 800;
 const DEFAULT_ROOM_HEIGHT = 640;
 
 export class CPXViewver extends CPX.core.App<CPXViewverRoom> {
-
   private _resourceManager: CPX.core.ResourceManager;
 
   constructor(config: IMenuConfig, appConfig: CPX.core.IAppConfig) {
@@ -27,16 +26,13 @@ export class CPXViewver extends CPX.core.App<CPXViewverRoom> {
 
     this._resourceManager = new CPX.core.ResourceManager(config.resources);
 
-    this._room = new CPXViewverRoom({
+    this._room = new CPXViewverRoom(this, {
       camera: config.camera,
-      autosize: config.room.autosize
+      autosize: config.room.autosize,
     });
 
     if (config.room) {
-      this.room.setSize(
-        config.room.width || DEFAULT_ROOM_WIDTH,
-        config.room.height || DEFAULT_ROOM_HEIGHT
-      );
+      this.room.setSize(config.room.width || DEFAULT_ROOM_WIDTH, config.room.height || DEFAULT_ROOM_HEIGHT);
     } else {
       this.room.setSize(DEFAULT_ROOM_WIDTH, DEFAULT_ROOM_HEIGHT);
     }

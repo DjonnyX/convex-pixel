@@ -3,7 +3,7 @@ import { ICameraController } from "./interfaces";
 import { IVector2D, Vector2D } from "../../utils/geom";
 import { Camera } from "../camera";
 
-export class CameraMouseController implements ICameraController {
+export class CameraMouseController<T extends App = any> implements ICameraController {
   public camera: Camera | undefined;
 
   public onMove: ((data: IVector2D) => void) | undefined;
@@ -13,30 +13,30 @@ export class CameraMouseController implements ICameraController {
 
   protected _cameraTarget = new Vector2D();
 
-  constructor() {
-    App.instance.pixi.stage.interactive = true;
-    App.instance.pixi.stage.on("mousemove", this._handlerStageMouseMove);
-    App.instance.pixi.stage.on("touchmove", this._handlerStageTouchMove);
+  constructor(public readonly context: T) {
+    context.pixi.stage.interactive = true;
+    context.pixi.stage.on("mousemove", this._handlerStageMouseMove);
+    context.pixi.stage.on("touchmove", this._handlerStageTouchMove);
   }
 
   public initialize() {
     if (!this.camera) {
-      throw Error("Property \"camera\" is not defined");
+      throw Error(`Property "camera" is not defined`);
     }
 
     this._handlerStageMouseMove({
       data: {
         global: {
           x: this.camera.viewport.width * 0.5,
-          y: this.camera.viewport.height * 0.5
-        }
-      }
+          y: this.camera.viewport.height * 0.5,
+        },
+      },
     });
   }
 
   public destroy() {
-    App.instance.pixi.stage.off("mousemove", this._handlerStageMouseMove);
-    App.instance.pixi.stage.off("touchmove", this._handlerStageTouchMove);
+    this.context.pixi.stage.off("mousemove", this._handlerStageMouseMove);
+    this.context.pixi.stage.off("touchmove", this._handlerStageTouchMove);
     this.onMove = this.onPOV = this.onZoom = this.onRotate = undefined;
   }
 
@@ -50,7 +50,7 @@ export class CameraMouseController implements ICameraController {
 
   private calculate(x: number, y: number) {
     if (!this.camera) {
-      throw Error("Property \"camera\" is not defined");
+      throw Error(`Property "camera" is not defined`);
     }
 
     const sceneBounds = this.camera.room.roomBound;
@@ -88,11 +88,8 @@ export class CameraMouseController implements ICameraController {
       this.onPOV(Vector2D.new(xx, yy));
     }
 
-    const sx =
-      (sWidth - this.camera.viewport.width) * (x / this.camera.viewport.width);
-    const sy =
-      (sHeight - this.camera.viewport.height) *
-      (y / this.camera.viewport.height);
+    const sx = (sWidth - this.camera.viewport.width) * (x / this.camera.viewport.width);
+    const sy = (sHeight - this.camera.viewport.height) * (y / this.camera.viewport.height);
 
     if (this.onMove) {
       this.onMove(Vector2D.new(sx, sy));
