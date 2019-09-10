@@ -1,6 +1,6 @@
 {
   "name": "convex-pixel",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "The library for creating pseudo 3d interactive scenes based on webgl",
   "keywords": [
     "pseudo3d",
