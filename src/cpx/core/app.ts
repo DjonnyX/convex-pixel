@@ -14,6 +14,8 @@ export interface IAppConfig {
   clearBeforeRender?: boolean;
   forceFXAA?: boolean;
   powerPreference?: string;
+  sharedLoader?: boolean;
+  sharedTicker?: boolean;
 }
 
 export class App<R extends BaseRoom = any> {
@@ -45,8 +47,8 @@ export class App<R extends BaseRoom = any> {
     this.pixi = new PIXI.Application({
       antialias: config.antialias,
       transparent: config.transparent,
-      sharedLoader: true,
-      sharedTicker: true,
+      sharedLoader: config.sharedLoader,
+      sharedTicker: config.sharedTicker,
       preserveDrawingBuffer: config.preserveDrawingBuffer,
       resolution: config.resolution,
       forceCanvas: config.forceCanvas,
