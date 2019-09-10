@@ -3,7 +3,6 @@ import { BaseContainer, BaseRoom, BaseConvexObject } from "../display/base";
 import { CameraControllerEventTypes } from "../camera/controller";
 
 export class P3DCameraProcessor {
-
   public get room() {
     return this._room;
   }
@@ -12,7 +11,7 @@ export class P3DCameraProcessor {
 
   constructor(protected _room: BaseRoom) {
     if (!this._room) {
-      throw Error("Property \"room\" is not defined.");
+      throw Error(`Property "room" is not defined.`);
     }
 
     this.addCameraListeners();
@@ -24,21 +23,14 @@ export class P3DCameraProcessor {
     if (this._lastTime === t) return;
 
     const cam = this._room.camera;
-    const object =
-      displayObject instanceof BaseConvexObject
-        ? displayObject
-        : null;
+    const object = displayObject instanceof BaseConvexObject ? displayObject : null;
 
     if (cam && object) {
       const sceneBounds = this._room.roomBound;
-      const stage = object.stage;
+      const stage = object.cpxStage;
 
-      const cx =
-        (sceneBounds.width * 0.5 - (stage.x + object.x)) *
-        this._room.scale.x;
-      const cy =
-        (sceneBounds.height * 0.5 - (stage.y + object.y)) *
-        this._room.scale.y;
+      const cx = (sceneBounds.width * 0.5 - (stage ? stage.x : 0 + object.x)) * this._room.scale.x;
+      const cy = (sceneBounds.height * 0.5 - (stage ? stage.y : 0 + object.y)) * this._room.scale.y;
 
       const sx = -(cam.pov.x - cx) * cam.xOffset;
       const sy = -(cam.pov.y - cy) * cam.yOffset;
@@ -72,28 +64,20 @@ export class P3DCameraProcessor {
     this._room.y = -this._room.camera.y;
   }
 
-  protected _handlerCameraChangePosition = (
-    e: PIXI.interaction.InteractionEvent
-  ) => {
+  protected _handlerCameraChangePosition = (e: PIXI.interaction.InteractionEvent) => {
     this.updatePositions();
   };
 
-  protected _handlerCameraChangePOV = (
-    e: PIXI.interaction.InteractionEvent
-  ) => {
+  protected _handlerCameraChangePOV = (e: PIXI.interaction.InteractionEvent) => {
     this.updatePOV(this._room);
   };
 
-  protected _handlerCameraChangeZoom = (
-    e: PIXI.interaction.InteractionEvent
-  ) => {
+  protected _handlerCameraChangeZoom = (e: PIXI.interaction.InteractionEvent) => {
     this._room.scale.x = this._room.scale.y = this._room.camera.maxZoom;
     // this.updatePositions(this._scene);
   };
 
-  protected _handlerCameraChangeRotate = (
-    e: PIXI.interaction.InteractionEvent
-  ) => {
+  protected _handlerCameraChangeRotate = (e: PIXI.interaction.InteractionEvent) => {
     // this.updatePositions(this._scene);
   };
 
@@ -101,43 +85,19 @@ export class P3DCameraProcessor {
     const cam = this._room.camera;
     if (!cam) throw new Error("The camera is not defined");
 
-    cam.addListener(
-      CameraControllerEventTypes.MOVE,
-      this._handlerCameraChangePosition
-    );
-    cam.addListener(
-      CameraControllerEventTypes.POV,
-      this._handlerCameraChangePOV
-    );
-    cam.addListener(
-      CameraControllerEventTypes.ZOOM,
-      this._handlerCameraChangeZoom
-    );
-    cam.addListener(
-      CameraControllerEventTypes.ROTATE,
-      this._handlerCameraChangeRotate
-    );
+    cam.addListener(CameraControllerEventTypes.MOVE, this._handlerCameraChangePosition);
+    cam.addListener(CameraControllerEventTypes.POV, this._handlerCameraChangePOV);
+    cam.addListener(CameraControllerEventTypes.ZOOM, this._handlerCameraChangeZoom);
+    cam.addListener(CameraControllerEventTypes.ROTATE, this._handlerCameraChangeRotate);
   }
 
   protected removeCameraListeners() {
     const cam = this._room.camera;
     if (!cam) throw new Error("The camera is not defined");
 
-    cam.removeListener(
-      CameraControllerEventTypes.POV,
-      this._handlerCameraChangePosition
-    );
-    cam.removeListener(
-      CameraControllerEventTypes.MOVE,
-      this._handlerCameraChangePOV
-    );
-    cam.removeListener(
-      CameraControllerEventTypes.ZOOM,
-      this._handlerCameraChangeZoom
-    );
-    cam.removeListener(
-      CameraControllerEventTypes.ROTATE,
-      this._handlerCameraChangeRotate
-    );
+    cam.removeListener(CameraControllerEventTypes.POV, this._handlerCameraChangePosition);
+    cam.removeListener(CameraControllerEventTypes.MOVE, this._handlerCameraChangePOV);
+    cam.removeListener(CameraControllerEventTypes.ZOOM, this._handlerCameraChangeZoom);
+    cam.removeListener(CameraControllerEventTypes.ROTATE, this._handlerCameraChangeRotate);
   }
 }

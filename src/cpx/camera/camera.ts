@@ -1,6 +1,6 @@
 import { TweenMax, Expo, Sine } from "gsap";
 import * as PIXI from "pixi.js";
-import { sonar as SonarUtils } from "../utils/package";
+import * as SonarUtils from "../utils/sonar";
 import { CameraControllerManager, CameraControllerEventTypes } from "./controller";
 import { Vector2D } from "../utils/geom";
 import { BaseRoom } from "../display/base";
@@ -18,7 +18,6 @@ export interface ICameraConfig {
 }
 
 export class Camera extends PIXI.utils.EventEmitter {
-
   public get room() {
     return this._room;
   }
@@ -129,11 +128,7 @@ export class Camera extends PIXI.utils.EventEmitter {
 
   protected _maxZoom = 1;
 
-  constructor(
-    protected _room: BaseRoom,
-    protected _viewport: PIXI.Rectangle = DEFAULT_BOUNDS,
-    config: ICameraConfig
-  ) {
+  constructor(protected _room: BaseRoom, protected _viewport: PIXI.Rectangle = DEFAULT_BOUNDS, config: ICameraConfig) {
     super();
 
     this._povFactor = config.pov || 1;
@@ -146,11 +141,7 @@ export class Camera extends PIXI.utils.EventEmitter {
 
     this.createControllerManager();
 
-    this._sonarViewport = new SonarUtils.SonarDetector(
-      this._viewport,
-      ["x", "y", "width", "height"],
-      "change"
-    );
+    this._sonarViewport = new SonarUtils.SonarDetector(this._viewport, ["x", "y", "width", "height"], "change");
     this._sonarViewport.addListener("change", () => {
       // this.emit("change-bound", { ...this._bounds });
     });
@@ -219,7 +210,7 @@ export class Camera extends PIXI.utils.EventEmitter {
         x: target.x,
         y: target.y,
         onUpdate: this._handlePivotUpdate,
-        ease: Sine.easeOut
+        ease: Sine.easeOut,
       });
     }
 
@@ -236,7 +227,7 @@ export class Camera extends PIXI.utils.EventEmitter {
         x: target.x,
         y: target.y,
         onUpdate: this._handlePOVUpdate,
-        ease: Expo.easeOut
+        ease: Expo.easeOut,
       });
     }
 
@@ -264,42 +255,18 @@ export class Camera extends PIXI.utils.EventEmitter {
 
   private createControllerManager() {
     this._controllers = new CameraControllerManager(this);
-    this._controllers.addListener(
-      CameraControllerEventTypes.MOVE,
-      this._handlerCameraMove
-    );
-    this._controllers.addListener(
-      CameraControllerEventTypes.POV,
-      this._handlerCameraPOV
-    );
-    this._controllers.addListener(
-      CameraControllerEventTypes.ZOOM,
-      this._handlerCameraZoom
-    );
-    this._controllers.addListener(
-      CameraControllerEventTypes.ROTATE,
-      this._handlerCameraRotate
-    );
+    this._controllers.addListener(CameraControllerEventTypes.MOVE, this._handlerCameraMove);
+    this._controllers.addListener(CameraControllerEventTypes.POV, this._handlerCameraPOV);
+    this._controllers.addListener(CameraControllerEventTypes.ZOOM, this._handlerCameraZoom);
+    this._controllers.addListener(CameraControllerEventTypes.ROTATE, this._handlerCameraRotate);
   }
 
   private removeControllerManager() {
     if (this._controllers) {
-      this._controllers.removeListener(
-        CameraControllerEventTypes.MOVE,
-        this._handlerCameraMove
-      );
-      this._controllers.removeListener(
-        CameraControllerEventTypes.POV,
-        this._handlerCameraPOV
-      );
-      this._controllers.removeListener(
-        CameraControllerEventTypes.ZOOM,
-        this._handlerCameraZoom
-      );
-      this._controllers.removeListener(
-        CameraControllerEventTypes.ROTATE,
-        this._handlerCameraRotate
-      );
+      this._controllers.removeListener(CameraControllerEventTypes.MOVE, this._handlerCameraMove);
+      this._controllers.removeListener(CameraControllerEventTypes.POV, this._handlerCameraPOV);
+      this._controllers.removeListener(CameraControllerEventTypes.ZOOM, this._handlerCameraZoom);
+      this._controllers.removeListener(CameraControllerEventTypes.ROTATE, this._handlerCameraRotate);
       this._controllers.destroy();
     }
   }

@@ -1,6 +1,6 @@
 import * as PIXI from "pixi.js";
 import { BaseContainer, BaseRoom, BaseConvexObject, IBaseConvexObjectConfig } from "./base";
-import { App } from "../core/package";
+import { App } from "../core/app";
 
 export interface IConvexObjectConfig extends IBaseConvexObjectConfig {
   x?: number;
@@ -16,8 +16,8 @@ export interface IConvexObjectConfig extends IBaseConvexObjectConfig {
 }
 
 export class ConvexObject<T extends App = any, C extends IConvexObjectConfig = any> extends BaseConvexObject<T, C> {
-  constructor(public readonly context: T, stage: BaseContainer, config: C) {
-    super(context, stage, config);
+  constructor(public readonly appContext: T, cpxStage: BaseContainer, config: C) {
+    super(appContext, cpxStage, config);
   }
 
   public setPOV(x: number, y: number) {
@@ -26,8 +26,8 @@ export class ConvexObject<T extends App = any, C extends IConvexObjectConfig = a
     }
 
     const depth = this._config.isBackground ? 1 : this._config.depth;
-    this._displacementFilter.scale.x = x * depth * this.context.room.camera.maxZoom;
-    this._displacementFilter.scale.y = y * depth * this.context.room.camera.maxZoom;
+    this._displacementFilter.scale.x = x * depth * this.appContext.room.camera.maxZoom;
+    this._displacementFilter.scale.y = y * depth * this.appContext.room.camera.maxZoom;
   }
 
   /**
@@ -35,7 +35,7 @@ export class ConvexObject<T extends App = any, C extends IConvexObjectConfig = a
    * Repeat сalls are blocked
    */
   public recalculateCameraPOV() {
-    (this.context.room as BaseRoom).recalculateCameraPOV();
+    (this.appContext.room as BaseRoom).recalculateCameraPOV();
   }
 
   public pointerHover() {}

@@ -5,7 +5,6 @@ import { CameraControllerEventTypes } from "./events/event-types";
 import { ICameraController } from "./interfaces";
 
 export class CameraControllerManager extends PIXI.utils.EventEmitter {
-
   protected _controllers: ICameraController[] = [];
 
   constructor(protected _camera: Camera) {
@@ -23,7 +22,7 @@ export class CameraControllerManager extends PIXI.utils.EventEmitter {
   public removeAll() {
     while (this._controllers.length > 0) {
       const controller = this._controllers.pop();
-      
+
       if (controller) {
         controller.destroy();
       }

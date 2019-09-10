@@ -38,8 +38,8 @@ export default class CPXScene<C extends CPX.core.App = any> extends CPX.display.
     this.selectedInventory = target;
   };
 
-  constructor(context: C, protected _data: IScene) {
-    super(context, null);
+  constructor(appContext: C, protected _data: IScene) {
+    super(appContext, null);
 
     this.addChild(this._container);
     this.addChild(this._ripple);
@@ -53,7 +53,7 @@ export default class CPXScene<C extends CPX.core.App = any> extends CPX.display.
   public build() {
     for (const objectData of this._data.objects) {
       const resource = CPX.core.ResourceManager.getResource(objectData.resource);
-      const sprite = new Inventory(this.context, this, { ...objectData, ...resource });
+      const sprite = new Inventory(this.appContext, this, { ...objectData, ...resource });
 
       this._inventories.push(sprite);
 
@@ -106,7 +106,7 @@ export default class CPXScene<C extends CPX.core.App = any> extends CPX.display.
 
   private animateIn(obj, scale, pos) {
     obj.animatePOV();
-    this._ripple.in(obj.position, this.context.room.roomBound, 0xffffff);
+    this._ripple.in(obj.position, this.appContext.room.roomBound, 0xffffff);
 
     if (obj.parent !== this._foregroundContainer) {
       this._container.removeChild(obj);
@@ -183,8 +183,8 @@ export default class CPXScene<C extends CPX.core.App = any> extends CPX.display.
             inventory,
             { x: 3, y: 3 },
             {
-              x: this.context.room.roomBound.width * 0.5,
-              y: this.context.room.roomBound.height * 0.5,
+              x: this.appContext.room.roomBound.width * 0.5,
+              y: this.appContext.room.roomBound.height * 0.5,
             }
           );
         } else {

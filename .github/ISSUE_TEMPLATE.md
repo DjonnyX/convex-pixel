@@ -4,7 +4,7 @@
 
 ## Bug report
 
-- pix3d version: _x.x.x_ (<!-- (run `npm list pix3d` from a terminal/cmd prompt): -->)
+- convex-pixel version: _x.x.x_ (<!-- (run `npm list convex-pixel` from a terminal/cmd prompt): -->)
 - Affected browsers (and versions): _IE 10_
 
 ### Current behaviour

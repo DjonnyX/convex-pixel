@@ -6,7 +6,7 @@ export enum SceneEventTypes {
 }
 
 export class BaseContainer<T extends App = any, S extends BaseContainer = any> extends PIXI.Container {
-  constructor(public readonly context: T, public readonly stage?: S) {
+  constructor(public readonly appContext: T, public readonly cpxStage?: S) {
     super();
   }
 }

@@ -1,14 +1,17 @@
 import * as PIXI from "pixi.js";
-import { Camera, ICameraConfig, ICameraController } from "../../camera/package";
-import { P3DCameraProcessor, App } from "../../core/package";
-import { display as DisplayUtils, sonar as SonarUtils } from "../../utils/package";
+import { Camera, ICameraConfig } from "../../camera/camera";
+import { ICameraController } from "../../camera/controller/interfaces";
+import { P3DCameraProcessor } from "../../core/camera-processor";
+import { App } from "../../core/app";
+import * as DisplayUtils from "../../utils/display";
+import * as SonarUtils from "../../utils/sonar";
 import { BaseContainer } from "./base-container";
 
 export interface IRoomOptions {
   camera: {
     class: new (room: BaseRoom, viewport?: PIXI.Rectangle, config?: ICameraConfig) => Camera;
     config: ICameraConfig;
-    controllers: Array<new (context: App) => ICameraController>;
+    controllers: Array<new (appContext: App) => ICameraController>;
     viewport?: PIXI.Rectangle;
   };
   autosize: DisplayUtils.RatioFitTypes;
@@ -33,8 +36,8 @@ export class BaseRoom<C extends App = any> extends BaseContainer<C> {
 
   private _sonarResize: SonarUtils.SonarDebounce;
 
-  constructor(context: C, options: IRoomOptions) {
-    super(context);
+  constructor(appContext: C, options: IRoomOptions) {
+    super(appContext);
 
     this._autosize = options.autosize || DisplayUtils.RatioFitTypes.NONE;
 
@@ -46,7 +49,7 @@ export class BaseRoom<C extends App = any> extends BaseContainer<C> {
         continue;
       }
 
-      this._camera.controllers.add(new controller(context));
+      this._camera.controllers.add(new controller(appContext));
     }
 
     this._cameraProcessor = new P3DCameraProcessor(this);
