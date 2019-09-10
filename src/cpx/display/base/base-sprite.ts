@@ -1,7 +1,7 @@
 import * as PIXI from "pixi.js";
 import { MapTypes } from "../material";
 import { BaseContainer } from "./base-container";
-import { App } from "@cpx/cpx/core/app";
+import { App } from "../../core/app";
 
 interface IResources<T = any> {
   diffuse?: T;
