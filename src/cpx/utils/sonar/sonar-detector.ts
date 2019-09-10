@@ -1,7 +1,7 @@
 import * as PIXI from "pixi.js";
 import { SonarEventTypes, Sonar } from "./sonar";
 
-export class SonarDetector<T extends {[x: string]: any} = object> extends PIXI.utils.EventEmitter {
+export class SonarDetector<T extends { [x: string]: any } = object> extends PIXI.utils.EventEmitter {
   private _snapshot: any = {};
 
   private _nextTimeoutId: any;
@@ -28,7 +28,7 @@ export class SonarDetector<T extends {[x: string]: any} = object> extends PIXI.u
     }
 
     if (!this.detectedProps) {
-      throw Error("Property \"detectedProps\" is not defined.");
+      throw Error(`Property "detectedProps" is not defined.`);
     }
 
     for (const prop of this.detectedProps) {
@@ -79,5 +79,5 @@ export class SonarDetector<T extends {[x: string]: any} = object> extends PIXI.u
 
   private _detectChangesHandler = (nextStep = false) => {
     this.detectChanges(nextStep);
-  }
+  };
 }

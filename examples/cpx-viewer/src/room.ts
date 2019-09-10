@@ -10,8 +10,8 @@ interface ICPXViewverRoomOptions {
 export default class CPXViewverRoom<C extends CPX.core.App = any> extends CPX.display.BaseRoom<C> {
   protected _sceneCollection: IScene[];
 
-  constructor(context: C, config: ICPXViewverRoomOptions) {
-    super(context, {
+  constructor(appContext: C, config: ICPXViewverRoomOptions) {
+    super(appContext, {
       camera: {
         class: CPX.camera.Camera,
         config: config.camera,
@@ -47,13 +47,13 @@ export default class CPXViewverRoom<C extends CPX.core.App = any> extends CPX.di
       // Нужен выделенный интерфейс
       const sceneDescriptor: IScene = { objects: expandedCollectio };
 
-      const scene = new CPXScene(this.context, sceneDescriptor);
+      const scene = new CPXScene(this.appContext, sceneDescriptor);
       this.addChild(scene);
       return;
     }
 
     for (const s of this.scenes) {
-      const scene = new CPXScene(this.context, s);
+      const scene = new CPXScene(this.appContext, s);
       scene.x = s.x || 0;
       scene.y = s.y || 0;
       this.addChild(scene);

@@ -4,7 +4,7 @@ const DEFAULT_INTERVAL = 500;
 
 export enum SonarEventTypes {
   CHANGE = "change",
-  LOST_CONTEXT = "lost-context"
+  LOST_CONTEXT = "lost-context",
 }
 
 export class Sonar {

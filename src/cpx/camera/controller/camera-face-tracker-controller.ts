@@ -1,4 +1,4 @@
-import { App } from "../../core/package";
+import { App } from "../../core/app";
 import { ICameraController } from "./interfaces";
 import { IVector2D, Vector2D } from "../../utils/geom";
 import { FaceTrackerService } from "../service";
@@ -16,8 +16,8 @@ export class CameraFaceTrackerController<T extends App = any> implements ICamera
 
   protected _faceTrackerService: FaceTrackerService;
 
-  constructor(public readonly context: T) {
-    context.pixi.stage.interactive = true;
+  constructor(public readonly appContext: T) {
+    appContext.pixi.stage.interactive = true;
     this._faceTrackerService = new FaceTrackerService();
     this._faceTrackerService.addListener("move", this._handlerFaceMove);
   }

@@ -1,4 +1,4 @@
-import { App } from "../../core/package";
+import { App } from "../../core/app";
 import { ICameraController } from "./interfaces";
 import { IVector2D, Vector2D } from "../../utils/geom";
 import { Camera } from "../camera";
@@ -13,10 +13,10 @@ export class CameraMouseController<T extends App = any> implements ICameraContro
 
   protected _cameraTarget = new Vector2D();
 
-  constructor(public readonly context: T) {
-    context.pixi.stage.interactive = true;
-    context.pixi.stage.on("mousemove", this._handlerStageMouseMove);
-    context.pixi.stage.on("touchmove", this._handlerStageTouchMove);
+  constructor(public readonly appContext: T) {
+    appContext.pixi.stage.interactive = true;
+    appContext.pixi.stage.on("mousemove", this._handlerStageMouseMove);
+    appContext.pixi.stage.on("touchmove", this._handlerStageTouchMove);
   }
 
   public initialize() {
@@ -35,8 +35,8 @@ export class CameraMouseController<T extends App = any> implements ICameraContro
   }
 
   public destroy() {
-    this.context.pixi.stage.off("mousemove", this._handlerStageMouseMove);
-    this.context.pixi.stage.off("touchmove", this._handlerStageTouchMove);
+    this.appContext.pixi.stage.off("mousemove", this._handlerStageMouseMove);
+    this.appContext.pixi.stage.off("touchmove", this._handlerStageTouchMove);
     this.onMove = this.onPOV = this.onZoom = this.onRotate = undefined;
   }
 
