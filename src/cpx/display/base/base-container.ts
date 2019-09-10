@@ -1,5 +1,5 @@
 import * as PIXI from "pixi.js";
-import { App } from "@cpx/cpx/core/app";
+import { App } from "../../core/app";
 
 export enum SceneEventTypes {
   REPOSITION = "reposition",
