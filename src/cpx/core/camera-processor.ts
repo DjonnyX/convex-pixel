@@ -36,8 +36,8 @@ export class P3DCameraProcessor {
       const sx = -(cam.pov.x - cx) * cam.xOffset;
       const sy = -(cam.pov.y - cy) * cam.yOffset;
 
-      const povX = sx * 0.01 * cam.povFactor;
-      const povY = sy * 0.01 * cam.povFactor;
+      const povX = sx * 0.01 * cam.povFactor * object.scale.x;
+      const povY = sy * 0.01 * cam.povFactor * object.scale.y;
 
       object.setPOV(povX * object.scale.x, povY * object.scale.y);
       if (object.config.isBackground) {
