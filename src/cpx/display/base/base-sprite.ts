@@ -29,8 +29,8 @@ export class BaseConvexObject<T extends App = any, C extends IBaseConvexObjectCo
 
   protected _filters: PIXI.Filter[] = [];
 
-  constructor(public readonly appContext: T, public readonly cpxStage: BaseContainer, protected _config: C) {
-    super(appContext, cpxStage);
+  constructor(appContext: T, protected _config: C) {
+    super(appContext);
 
     this.initialize();
   }
@@ -130,8 +130,6 @@ export class BaseConvexObject<T extends App = any, C extends IBaseConvexObjectCo
     if (this._diffuseMapSprite) {
       this._diffuseMapSprite.filters = this._filters;
     }
-
-    // this.dispatcher.dispatchEventWith("resize", true);
   }
 
   public get container() {

@@ -16,8 +16,8 @@ export interface IConvexObjectConfig extends IBaseConvexObjectConfig {
 }
 
 export class ConvexObject<T extends App = any, C extends IConvexObjectConfig = any> extends BaseConvexObject<T, C> {
-  constructor(public readonly appContext: T, cpxStage: BaseContainer, config: C) {
-    super(appContext, cpxStage, config);
+  constructor(public readonly appContext: T, config: C) {
+    super(appContext, config);
   }
 
   public setPOV(x: number, y: number) {
@@ -38,13 +38,18 @@ export class ConvexObject<T extends App = any, C extends IConvexObjectConfig = a
     (this.appContext.room as BaseRoom).recalculateCameraPOV();
   }
 
-  public pointerHover() {}
-
-  public pointerOutside() {}
-
   public dispose() {
+    if (this._container) {
+      this._container.removeAllListeners();
+    }
     super.destroy();
   }
+
+  protected pointerHover() {}
+
+  protected pointerOutside() {}
+
+  protected pointerTap() {}
 
   protected loadingComplete() {
     if (!this._container) {
@@ -58,8 +63,9 @@ export class ConvexObject<T extends App = any, C extends IConvexObjectConfig = a
         this._container.hitArea = new PIXI.Polygon(this._config.hitArea);
       }
 
-      this._container.on("pointerover", this._pointerOverHandler);
-      this._container.on("pointerout", this._pointerOutHandler);
+      this._container.addListener("pointerover", this._pointerOverHandler);
+      this._container.addListener("pointerout", this._pointerOutHandler);
+      this._container.addListener("pointertap", this._pointerTapHandler);
     }
     // set pivot and scale
     this._container.scale.x = this._container.scale.y = this._config.scale;
@@ -78,5 +84,9 @@ export class ConvexObject<T extends App = any, C extends IConvexObjectConfig = a
 
   private _pointerOutHandler = () => {
     this.pointerOutside();
+  };
+
+  private _pointerTapHandler = () => {
+    this.pointerTap();
   };
 }
