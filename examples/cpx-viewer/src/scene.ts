@@ -39,7 +39,7 @@ export default class CPXScene<C extends CPX.core.App = any> extends CPX.display.
   };
 
   constructor(appContext: C, protected _data: IScene) {
-    super(appContext, null);
+    super(appContext);
 
     this.addChild(this._container);
     this.addChild(this._ripple);
@@ -53,7 +53,7 @@ export default class CPXScene<C extends CPX.core.App = any> extends CPX.display.
   public build() {
     for (const objectData of this._data.objects) {
       const resource = CPX.core.ResourceManager.getResource(objectData.resource);
-      const sprite = new Inventory(this.appContext, this, { ...objectData, ...resource });
+      const sprite = new Inventory(this.appContext, { ...objectData, ...resource });
 
       this._inventories.push(sprite);
 

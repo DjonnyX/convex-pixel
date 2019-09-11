@@ -27,10 +27,11 @@ export class P3DCameraProcessor {
 
     if (cam && object) {
       const sceneBounds = this._room.roomBound;
-      const stage = object.cpxStage;
 
-      const cx = (sceneBounds.width * 0.5 - (stage ? stage.x : 0 + object.x)) * this._room.scale.x;
-      const cy = (sceneBounds.height * 0.5 - (stage ? stage.y : 0 + object.y)) * this._room.scale.y;
+      const abs = object.getGlobalPosition();
+
+      const cx = (sceneBounds.width * 0.5 - abs.x) * this._room.scale.x;
+      const cy = (sceneBounds.height * 0.5 - abs.y) * this._room.scale.y;
 
       const sx = -(cam.pov.x - cx) * cam.xOffset;
       const sy = -(cam.pov.y - cy) * cam.yOffset;

@@ -33,8 +33,8 @@ export class Inventory<T extends CPX.core.App, C extends CPX.display.IConvexObje
     this.emit('select', this);
   };
 
-  constructor(appContext: T, cpxStage: CPX.display.BaseContainer, config: C) {
-    super(appContext, cpxStage, config);
+  constructor(appContext: T, config: C) {
+    super(appContext, config);
 
     if (config.interactive) {
       this._container.addListener('rightclick', this._clickHandler);
