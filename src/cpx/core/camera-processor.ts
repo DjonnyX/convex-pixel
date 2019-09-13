@@ -25,7 +25,7 @@ export class P3DCameraProcessor {
     const cam = this._room.camera;
     const object = displayObject instanceof BaseConvexObject ? displayObject : undefined;
 
-    if (cam && object) {
+    if (cam && object && object.setPOV) {
       const sceneBounds = this._room.roomBound;
 
       const abs = object.getGlobalPosition ? object.getGlobalPosition() : undefined;
