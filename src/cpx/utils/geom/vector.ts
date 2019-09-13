@@ -41,9 +41,18 @@ export class Vector2D implements IVector2D {
     return this;
   }
 
-  public from(vector2D: IVector2D) {
-    this.x = vector2D.x;
-    this.y = vector2D.y;
+  /**
+   * @deprecated
+   */
+  public move(x: number, y: number) {
+    this.x = x;
+    this.y = y;
+    return this;
+  }
+
+  public from(vector: IVector2D) {
+    this.x = vector.x;
+    this.y = vector.y;
     return this;
   }
 
@@ -54,11 +63,49 @@ export class Vector2D implements IVector2D {
   public valueOf() {
     return { x: this.x, y: this.y };
   }
+
+  public clone(): Vector2D {
+    return Vector2D.new(this.x, this.y);
+  }
+
+  public add(vector: Vector2D, isClone = true): Vector2D {
+    if (!isClone) {
+      this.x += vector.x;
+      this.y += vector.y;
+      return this;
+    }
+    return Vector2D.new(this.x + vector.x, this.y + vector.y);
+  }
+
+  public deduct(vector: IVector2D, isClone = true) {
+    if (!isClone) {
+      this.x -= vector.x;
+      this.y -= vector.y;
+      return this;
+    }
+    return Vector2D.new(this.x - vector.x, this.y - vector.y);
+  }
+
+  public measureDistance(vector: IVector2D, xAxis = true, yAxis = true) {
+    const a = Math.max(this.x, vector.x) - Math.min(this.x, vector.x);
+    const b = Math.max(this.y, vector.y) - Math.min(this.y, vector.y);
+    if (xAxis && yAxis) return Math.sqrt(Math.pow(a, 2) + Math.pow(b, 2));
+    else if (xAxis) return a;
+    else if (yAxis) return b;
+    return 0;
+  }
+
+  public comparePoint(vector: IVector2D) {
+    return this.x === vector.x && this.y === vector.y;
+  }
+
+  public empty() {
+    this.x = this.y = 0;
+  }
 }
 
 // tslint:disable-next-line: max-classes-per-file
 export class Vector3D implements IVector3D {
-
   private static _pool = new Array<Vector3D>();
 
   public static get poolCount() {
@@ -76,7 +123,7 @@ export class Vector3D implements IVector3D {
     return new Vector3D(x, y, z);
   }
 
-  constructor(public x = 0, public y = 0, public z = 0) { }
+  constructor(public x = 0, public y = 0, public z = 0) {}
 
   public set(x: number, y: number, z: number) {
     this.x = x;
@@ -96,7 +143,6 @@ export class Vector3D implements IVector3D {
 
 // tslint:disable-next-line: max-classes-per-file
 export class Vector4D implements IVector4D {
-
   private static _pool = new Array<Vector4D>();
 
   public static get poolCount() {
@@ -114,7 +160,7 @@ export class Vector4D implements IVector4D {
     return new Vector4D(x, y, z, t);
   }
 
-  constructor(public x = 0, public y = 0, public z = 0, public t = 0) { }
+  constructor(public x = 0, public y = 0, public z = 0, public t = 0) {}
 
   public set(x: number, y: number, z: number, t: number) {
     this.x = x;
