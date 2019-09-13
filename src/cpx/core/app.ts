@@ -75,7 +75,7 @@ export class App<R extends BaseRoom = any> {
     this.pixi.destroy();
   }
 
-  protected tick = () => {
+  protected update() {
     let needResize = false;
     if (this.pixi.view.width !== this._viewDomElement.offsetWidth) {
       this.pixi.view.width = this._viewDomElement.offsetWidth;
@@ -87,9 +87,13 @@ export class App<R extends BaseRoom = any> {
     }
 
     if (needResize) this.resize(this.pixi.view.width, this.pixi.view.height);
-  };
+  }
 
   protected resize(width: number, height: number) {
     // etc
   }
+
+  private tick = () => {
+    this.update();
+  };
 }
