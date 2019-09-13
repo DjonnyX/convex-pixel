@@ -51,6 +51,16 @@ export class ConvexObject<T extends App = any, C extends IConvexObjectConfig = a
 
   protected pointerTap() {}
 
+  public get originalWidth() {
+    const scale = this._container ? this._container.scale.x : 1;
+    return this._originalWidth * scale;
+  }
+
+  public get originalHeight() {
+    const scale = this._container ? this._container.scale.y : 1;
+    return this._originalHeight * scale;
+  }
+
   protected loadingComplete() {
     if (!this._container) {
       throw Error(`Propery "_container" is not defined.`);
