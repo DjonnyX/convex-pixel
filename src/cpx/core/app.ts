@@ -23,6 +23,10 @@ export class App<R extends BaseRoom = any> {
     return this._room;
   }
 
+  public get domSynchronizer() {
+    return this._domSynchronizer;
+  }
+
   public readonly pixi: PIXI.Application;
 
   protected _viewDomElement: HTMLElement;
@@ -34,10 +38,6 @@ export class App<R extends BaseRoom = any> {
   private _stageSonarResizeDetector: SonarUtils.SonarDetector | undefined;
 
   private _domElementResizeSonarDetector: SonarUtils.SonarDetector | undefined;
-
-  public get domSynchronizer() {
-    return this._domSynchronizer;
-  }
 
   constructor(config: IAppConfig) {
     SonarUtils.Sonar.create().run();
@@ -62,7 +62,7 @@ export class App<R extends BaseRoom = any> {
 
     this._viewDomElement.appendChild(this.pixi.view);
 
-    this.addListeners();
+    this.pixi.ticker.add(this.tick, 9999);
   }
 
   public setRoom(room: R) {
@@ -75,28 +75,21 @@ export class App<R extends BaseRoom = any> {
     this.pixi.destroy();
   }
 
+  protected tick = () => {
+    let needResize = false;
+    if (this.pixi.view.width !== this._viewDomElement.offsetWidth) {
+      this.pixi.view.width = this._viewDomElement.offsetWidth;
+      needResize = true;
+    }
+    if (this.pixi.view.height !== this._viewDomElement.offsetHeight) {
+      this.pixi.view.height = this._viewDomElement.offsetHeight;
+      needResize = true;
+    }
+
+    if (needResize) this.resize(this.pixi.view.width, this.pixi.view.height);
+  };
+
   protected resize(width: number, height: number) {
     // etc
   }
-
-  private _domElementResizeHandler = () => {
-    this.pixi.view.width = this._viewDomElement.offsetWidth;
-    this.pixi.view.height = this._viewDomElement.offsetHeight;
-  };
-
-  private addListeners() {
-    document.addEventListener("resize", this._domElementResizeHandler);
-
-    this._domElementResizeSonarDetector = new SonarUtils.SonarDetector(this._viewDomElement, ["offsetWidth", "offsetHeight"], "resize");
-    this._domElementResizeSonarDetector.detectChanges(true);
-    this._domElementResizeSonarDetector.addListener("resize", this._domElementResizeHandler);
-
-    this._stageSonarResizeDetector = new SonarUtils.SonarDetector(this.pixi.view, ["width", "height"], "resize");
-    this._stageSonarResizeDetector.detectChanges(true);
-    this._stageSonarResizeDetector.addListener("resize", this._stageResizeHandler);
-  }
-
-  private _stageResizeHandler = () => {
-    this.resize(this.pixi.view.width, this.pixi.view.height);
-  };
 }

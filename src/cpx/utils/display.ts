@@ -3,7 +3,9 @@ import { IVector2D, Vector4D } from "./geom/vector";
 export enum RatioFitTypes {
   NONE,
   FILL,
-  SHOW_ALL
+  SHOW_ALL,
+  O_FILL,
+  O_SHOW_ALL,
 }
 
 export const getRatio = (
@@ -13,14 +15,26 @@ export const getRatio = (
   height2: number,
   type: RatioFitTypes = RatioFitTypes.NONE
 ): number => {
-  const ratioX = width2 < width1 ? width2 / width1 : width1 / width2;
-  const ratioY = height2 < height1 ? height2 / height1 : height1 / height2;
+  let ratioX: number;
+  let ratioY: number;
 
   switch (type) {
     case RatioFitTypes.SHOW_ALL:
+      ratioX = width2 / width1;
+      ratioY = height2 / height1;
       return Math.min(ratioX, ratioY);
     case RatioFitTypes.FILL:
+      ratioX = width2 / width1;
+      ratioY = height2 / height1;
       return Math.max(ratioX, ratioY);
+    case RatioFitTypes.O_SHOW_ALL:
+      ratioX = width2 < width1 ? width2 / width1 : width1 / width2;
+      ratioY = height2 < height1 ? height2 / height1 : height1 / height2;
+      return Math.min(ratioX, ratioY);
+    case RatioFitTypes.O_FILL:
+      ratioX = width2 < width1 ? width2 / width1 : width1 / width2;
+      ratioY = height2 < height1 ? height2 / height1 : height1 / height2;
+      return Math.min(ratioX, ratioY);
     case RatioFitTypes.NONE:
     default:
       return 1;
@@ -50,12 +64,7 @@ export const getAbsolutePosition = (
     return Vector4D.new();
   }
 
-  const result = Vector4D.new(
-    object.x,
-    object.y,
-    object.scale.x,
-    object.scale.y
-  );
+  const result = Vector4D.new(object.x, object.y, object.scale.x, object.scale.y);
 
   if (object.parent) {
     const isVect = _to && object.parent instanceof _to;

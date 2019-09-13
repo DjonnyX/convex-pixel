@@ -7,7 +7,7 @@ export interface IResources {
 export class ResourceManager {
   private static _instance: ResourceManager | undefined;
 
-  private static _resources: IResources | undefined;;
+  private static _resources: IResources | undefined;
 
   public static get resources() {
     return this._resources;
@@ -19,7 +19,8 @@ export class ResourceManager {
 
   constructor(resources: IResources) {
     if (ResourceManager._instance) {
-      throw new Error("The resource manager already created. (singletone)");
+      return;
+      // throw new Error("The resource manager already created. (singletone)");
     }
 
     ResourceManager._instance = this;

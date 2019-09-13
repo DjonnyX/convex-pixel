@@ -29,6 +29,10 @@ export class BaseConvexObject<T extends App = any, C extends IBaseConvexObjectCo
 
   protected _filters: PIXI.Filter[] = [];
 
+  protected _originalWidth = 0;
+
+  protected _originalHeight = 0;
+
   constructor(appContext: T, protected _config: C) {
     super(appContext);
 
@@ -118,6 +122,9 @@ export class BaseConvexObject<T extends App = any, C extends IBaseConvexObjectCo
         this._displacementFilter.autoFit = true;
         this._filters.push(this._displacementFilter);
       }
+
+      this._originalWidth = this._diffuseMapSprite.width;
+      this._originalHeight = this._diffuseMapSprite.height;
 
       this.loadingComplete();
     }
