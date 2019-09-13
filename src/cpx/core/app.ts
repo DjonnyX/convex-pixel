@@ -16,6 +16,10 @@ export interface IAppConfig {
   powerPreference?: string;
   sharedLoader?: boolean;
   sharedTicker?: boolean;
+  autoDensity?: boolean;
+  resizeTo?: Window | HTMLElement;
+  width?: number;
+  height?: number;
 }
 
 export class App<R extends BaseRoom = any> {
@@ -55,7 +59,11 @@ export class App<R extends BaseRoom = any> {
       backgroundColor: config.backgroundColor,
       clearBeforeRender: config.clearBeforeRender,
       forceFXAA: config.forceFXAA,
+      autoDensity: config.autoDensity,
       powerPreference: config.powerPreference,
+      resizeTo: config.resizeTo,
+      width: config.width,
+      height: config.height,
     });
 
     this._domSynchronizer = new DomSynchronizer(this);
