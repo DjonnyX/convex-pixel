@@ -19,8 +19,8 @@ const MOCK_SCENES = {
     {
       objects: [
         {
-          diffuseMap: 'http://contents.eugene-grebennikov.pro/cpx/examples/ccb6d25cbabf951ec9b1d0ff1ce1c1d7.png',
-          depthMap: 'http://contents.eugene-grebennikov.pro/cpx/examples/61924b06fe658909cecd525e395744bc.png',
+          diffuseMap: 'https://contents.eugene-grebennikov.pro/cpx/examples/ccb6d25cbabf951ec9b1d0ff1ce1c1d7.png',
+          depthMap: 'https://contents.eugene-grebennikov.pro/cpx/examples/61924b06fe658909cecd525e395744bc.png',
           x: 960,
           y: 540,
           isBackground: true,
