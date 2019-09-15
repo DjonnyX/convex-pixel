@@ -34,34 +34,63 @@ Let's demonstrate simple usage with basic example:
 ```ts
 import CPX from "convex-pixel";
 
-const app = new CPX.core.App();
+class App extends CPX.core.App<MyRoom> {
 
-const room = new CPX.display.BaseRoom({
-  camera: {
-    class: Camera,
-    config: {
+  constructor(appConfig: CPX.core.IAppConfig) {
+    super(appConfig);
+
+    this._room = new MyRoom(appConfig);
+
+    this._room.setSize(DEFAULT_ROOM_WIDTH, DEFAULT_ROOM_HEIGHT);
+
+    this.pixi.stage.addChild(this.room);
+
+    this.createConvexObject();
+  }
+
+  private createConvexObject() {
+    const cpxObj = new CPX.display.ConvexObject(this.appContext, {
+      depth: 2.5;
+      hitArea: [0,0,200,0,200,200,0,200];
+      diffuseMap: "./assets/diffuse.png";
+      depthMap: "./assets/depth.png";
       ...
-    },
-    controllers: [CameraFaceTrackerController, CameraMouseController, CameraGyroscopeController]
-  },
-  autosize: true
-});
+    });
 
-const cpxObj = new CPX.display.ConvexObject(this, {
-  depth: 2.5;
-  hitArea: [0,0,200,0,200,200,0,200];
-  diffuseMap: "../assets/diffuse.png";
-  depthMap: "../assets/depth.png";
-  ...
-});
+    scene.addChild(cpxObj);
+  }
+}
 
-scene.addChild(cpxObj);
+class MyRoom<C extends CPX.core.App = any> extends CPX.display.BaseRoom<C> {
 
+  constructor(appContext: C) {
+    super(appContext, {
+      camera: {
+        class: CPX.camera.Camera,
+        config: {
+          pov: 1;
+          maxXOffset: 2;
+          maxYOffset: 2;
+          xOffset: 1;
+          yOffset: 0.75
+        },
+        controllers: [
+          CPX.camera.CameraMouseController,
+          CPX.camera.CameraGyroscopeController,
+        ],
+      },
+      autosize: CPX.utils.display.O_FILL,
+    });
+  }
+}
+
+const APP_CONFIG: CPX.core.IAppConfig = {
+  transparent: true,
+  view: document.getElementById('dom-el'),
+}
+
+new App(APP_CONFIG);
 ```
-
-## Credits
-
-Developer - Eugene Grebennikov (@djonnyx)
 
 ## MIT License
 
