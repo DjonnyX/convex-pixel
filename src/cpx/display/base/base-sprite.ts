@@ -11,7 +11,12 @@ interface IResources<T = any> {
 
 export interface IBaseConvexObjectConfig {
   diffuseMap: string;
+
   depthMap?: string;
+
+  diffuseMapTexture?: PIXI.Texture;
+
+  depthMapTexture?: PIXI.Texture;
 }
 
 export class BaseConvexObject<T extends App = any, C extends IBaseConvexObjectConfig = any> extends BaseContainer {
@@ -80,6 +85,15 @@ export class BaseConvexObject<T extends App = any, C extends IBaseConvexObjectCo
   protected initialize() {
     this._container = new PIXI.Container();
     this.addChild(this._container);
+
+    if (this._config.diffuseMapTexture) {
+      this._textures.diffuse = this._config.diffuseMapTexture;
+      if (this._config.depthMapTexture) {
+        this._textures.depth = this._config.depthMapTexture;
+      }
+      this.create();
+      return;
+    }
 
     this._loader = new PIXI.Loader();
 
