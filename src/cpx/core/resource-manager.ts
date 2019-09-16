@@ -14,7 +14,19 @@ export class ResourceManager {
   }
 
   public static getResource(name: string) {
-    return this._resources ? this._resources[name] : null;
+    if (!this._resources) return null;
+
+    const res = this._resources[name];
+    if (res) {
+      if (res.diffuseMap) {
+        res.diffuseMapTexture = PIXI.Texture.from(res.diffuseMap);
+      }
+      if (res.depthMap) {
+        res.depthMapTexture = PIXI.Texture.from(res.depthMap);
+      }
+      return res;
+    }
+    return null;
   }
 
   constructor(resources: IResources) {
