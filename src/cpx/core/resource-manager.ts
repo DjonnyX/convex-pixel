@@ -1,3 +1,4 @@
+import * as PIXI from "pixi.js";
 import { IConvexObjectConfig } from "../display/convex-object";
 
 export interface IResources {
