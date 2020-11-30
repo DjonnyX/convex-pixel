@@ -98,10 +98,14 @@ export class BaseConvexObject<T extends App = any, C extends IBaseConvexObjectCo
     this._loader = new PIXI.Loader();
 
     if (this._config.diffuseMap) {
-      this._loader.add(MapTypes.DIFFUSE, this._config.diffuseMap);
+      if (!this._loader.resources[MapTypes.DIFFUSE]) {
+        this._loader.add(MapTypes.DIFFUSE, this._config.diffuseMap);
+      }
     }
     if (this._config.depthMap) {
-      this._loader.add(MapTypes.DEPTH, this._config.depthMap);
+      if (!this._loader.resources[MapTypes.DEPTH]) {
+        this._loader.add(MapTypes.DEPTH, this._config.depthMap);
+      }
     }
 
     this._loader.load((loader: PIXI.Loader, resources: Partial<Record<string, PIXI.LoaderResource>>) => {
@@ -151,6 +155,8 @@ export class BaseConvexObject<T extends App = any, C extends IBaseConvexObjectCo
     if (this._diffuseMapSprite) {
       this._diffuseMapSprite.filters = this._filters;
     }
+
+    this.emit("loaded");
   }
 
   public get container() {
